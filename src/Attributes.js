@@ -3,6 +3,7 @@ import Iframe from "react-iframe";
 import { extractUsefulAttributes } from "./components/IFrameParser/Parser.js";
 import AttributesPanel from "./AttributesPanel.js";
 import "./App.css";
+import { Change } from "./model/Change.js";
 
 const siteUrl = "http://localhost:3001/";
 
@@ -12,7 +13,8 @@ class Attributes extends PureComponent {
 
     this.state = {
       path: "",
-      attributes: {}
+      attributes: {},
+      tag: ""
     };
   }
 
@@ -20,7 +22,7 @@ class Attributes extends PureComponent {
     window.addEventListener("message", e => {
       if (e.data.path !== undefined) {
         const attributes = extractUsefulAttributes(e.data.tagName, e.data);
-        this.setState({ attributes, path: e.data.path });
+        this.setState({ attributes, path: e.data.path, tag: e.data.tagName });
       }
     });
   }
@@ -35,17 +37,21 @@ class Attributes extends PureComponent {
     this.setState({ attributes });
   };
 
-  postAttributes = () => {
-    const { path, attributes } = this.state;
+  sendChangeToTargetApp = (change) => {
+    console.log(change)
     const iframe = document.getElementById("id1");
-    console.log(path, attributes);
-    iframe.contentWindow.postMessage({ path, attributes }, "*");
-    this.setState({
-      attributes: {}
-    });
-  };
+    iframe.contentWindow.postMessage({ change }, "*");
+
+    if(change._change_type == "edit") {
+      // clear attributes
+      this.setState({
+        attributes: {}
+      });
+    }
+  }
 
   render() {
+    const innerHTML = "<p>Test</p>";
     return (
       <div className="App">
         <header className="App-header">
@@ -55,9 +61,31 @@ class Attributes extends PureComponent {
                 attributes={this.state.attributes}
                 onChangeAttribute={this.onChangeAttribute}
               />
-              <button type="button" onClick={this.postAttributes}>
+              <button type="button" onClick={()=>{
+                var change = new Change(Change.CHANGE_TYPES.EDIT, this.state.path, { "attributes": this.state.attributes })
+                this.sendChangeToTargetApp(change);
+              }}>
                 Save
               </button>
+              <button type="button" onClick={()=>{
+                var change = new Change(Change.CHANGE_TYPES.REMOVE, this.state.path, {})
+                this.sendChangeToTargetApp(change);
+              }}>
+                Remove
+              </button>
+              {this.state.tag === "DIV" ? (
+                <div>
+                  <button
+                    type="button"
+                    onClick={()=>{
+                      var change = new Change(Change.CHANGE_TYPES.ADD, this.state.path, { "inner-html": innerHTML })
+                      this.sendChangeToTargetApp(change);
+                    }}
+                  >
+                    Add
+                  </button>
+                </div>
+              ) : null}
               <Iframe id="id1" url={siteUrl} height="1000" width="1000" />
             </div>
           </div>
