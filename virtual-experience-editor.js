@@ -1,6 +1,10 @@
 (() => {
   let isEditMode = false;
   let editedItem = null;
+  let editedItemId = null;
+  var dragged;
+  var oldPath;
+  var newPath;
 
   function highlightElement(ev) {
     const { target } = ev;
@@ -22,7 +26,7 @@
 
   async function enterEditMode(ev) {
     if (editedItem) {
-      return;
+      exitEditMode();
     }
     const { target } = ev;
 
@@ -31,6 +35,7 @@
 
     target.setAttribute("edited", true);
     editedItem = target;
+    editedItemId = target.id;
 
     try {
       await notifyServerEditOn(target);
@@ -39,9 +44,18 @@
     }
   }
 
-  function exitEditMode(element) {
-    element.removeAttribute("edited", true);
-    unHighlightElement({ target: element });
+  function exitEditMode() {
+    if (!editedItem) {
+      return;
+    }
+    editedItem.removeAttribute("edited", true);
+    editedItem.removeAttribute("draggable");
+    editedItem.removeAttribute("id");
+    editedItem.removeEventListener("ondragstart", onDragStart);
+    if (editedItemId) {
+      editedItem.setAttribute("id", editedItemId);
+    }
+    unHighlightElement({ target: editedItem });
     editedItem = null;
   }
 
@@ -66,40 +80,102 @@
     } catch(error) {
       console.log(error);
     }
+        
+    if (tagName || tagName === "DIV" || tagName === "SPAN") {
+      editedItem.setAttribute("draggable", true);
+      editedItem.setAttribute("id", "draggableElement");
+      editedItem.addEventListener("dragstart", onDragStart);
+    }
 
     try{
       window.top.postMessage(editableData, "*");
     } catch(error) {
       console.log(error);
     }
+
   }
 
+  /**
+        Properties format for changes:
+        1. add:
+        _properties = {
+          "inner-html": "<p></p>"
+        }
+    
+        2. edit:
+        _properties = {
+          "attributes": {}
+        }
+    
+        3. remove: nothing special
+      */
   function getParentElementMessage(e) {
     const {
-      data: { path, attributes }
+      data: { change }
     } = e;
 
-    for (var prop in editedItem) {
-      if (attributes[prop] !== undefined) {
+    if (!change) {
+      return;
+    }
+
+    var path = change._position;
+    targetItem = decryptChildPath(path);
+
+    switch (change._change_type) {
+      case "add":
+        addNewElement(targetItem, change._properties["inner-html"]);
+        break;
+      case "edit":
+        editElement(targetItem, change._properties["attributes"]);
+        break;
+      case "remove":
+        removeElement(targetItem);
+        break;
+      default:
+        break;
+    }
+
+    exitEditMode();
+  }
+
+  function addNewElement(parentElement, innerHTML) {
+    if (parentElement) {
+      const div = document.createElement("div");
+      div.innerHTML = innerHTML;
+      parentElement.appendChild(div);
+    }
+  }
+
+  function removeElement(elem) {
+    if (elem) {
+      elem.parentNode.removeChild(elem);
+    }
+  }
+
+  function editElement(elem, newAttributes) {
+    if (!elem) {
+      return;
+    }
+
+    for (var prop in elem) {
+      if (newAttributes[prop] !== undefined) {
         if (prop === "style") { 
-          let info = attributes[prop];
+          let info = newAttributes[prop];
           let sepp = info.split(';').map(pair => pair.split(':'));
 
           for (var i = 0; i < sepp.length; i++) {
-            elem = sepp[i];
-            if (elem.length !== 2) continue;
+            let el = sepp[i];
+            if (el.length !== 2) continue;
 
-            editedItem[prop][elem[0].trim()] = elem[1];
+            elem[prop][el[0].trim()] = el[1];
           }
           
           continue;
         }
 
-        editedItem[prop] = attributes[prop];
+        elem[prop] = newAttributes[prop];
       }
     }
-
-    exitEditMode(editedItem);
   }
 
   function encryptChildPath(element) {
@@ -136,9 +212,54 @@
     return current;
   }
 
+  /// Drag & drop TODO(make it better)
+  function onDragStart(event) {
+    // event.dataTransfer.setData("text/plain", event.target.id);
+    dragged = event.target;
+    oldPath = encryptChildPath(dragged);
+  }
+
+  function onDragOver(event) {
+    event.preventDefault();
+  }
+
+  function onDrop(event) {
+    // const id = event.dataTransfer.getData("text");
+    // const draggableElement = document.getElementById(id);
+    // const dropzone = event.target;
+    // dropzone.appendChild(draggableElement);
+    // event.dataTransfer.clearData();
+  }
+
+  function onDragEnter(event) {
+    // highlight potential drop target when the draggable element enters it
+    if (event.target.tagName === "SPAN" || event.target.tagName === "DIV") {
+      //   event.target.style.background = "purple";
+      try {
+        event.target.appendChild(dragged);
+        newPath = encryptChildPath(dragged);
+        //console.log(oldPath, newPath);
+        // editedItem.parentNode.removeChild(editedItem);
+      } catch (e) {}
+    }
+    // }
+  }
+
+  function onDragLeave(event) {
+    // reset background of potential drop target when the draggable element leaves it
+    if (event.target.tagName === "SPAN" || event.target.tagName === "DIV") {
+      //   event.target.style.background = "";
+    }
+  }
+  ///
+
   const body = document.getElementsByTagName("body")[0];
   body.addEventListener("click", enterEditMode);
   body.addEventListener("mouseover", highlightElement);
   body.addEventListener("mouseout", unHighlightElement);
   window.addEventListener("message", getParentElementMessage);
+  document.addEventListener("dragenter", onDragEnter);
+  document.addEventListener("dragover", onDragOver);
+  document.addEventListener("drop", onDrop);
+  //   document.addEventListener("dragleave", onDragLeave, false);
 })();

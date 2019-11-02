@@ -1,45 +1,55 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
-import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Home from "./containers/Home/Home";
-import Experience from "./containers/Experience/Experience";
 import Attributes from "./Attributes";
+import { Container } from "semantic-ui-react";
+import AppMenu from "./components/AppMenu/AppMenu";
+import Workspace from "./containers/Workspace/Workspace";
+import EditableIframe from "./containers/EditableIframe/EditableIframe";
 
-function App() {
+class App extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div className="App">
-      <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/experience">About</Link>
-              </li>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/attributes">Attributes</Link>
-              </li>
-            </ul>
-          </nav>
+    this.state = {
+      activeItem: "" || window.location.pathname.substr(1)
+    };
+  }
 
-          <Switch>
-            <Route path="/experience">
-              <Experience />
-            </Route>
-            <Route path="/attributes">
-              <Attributes />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
-    </div>
-  );
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  render() {
+    const { activeItem } = this.state;
+    return (
+      <div className="App">
+        <Container fluid>
+          <Router>
+            <div>
+              <AppMenu
+                activeItem={activeItem}
+                handleItemClick={this.handleItemClick}
+              />
+              <Switch>
+                <Route path="/workspace/:fileName">
+                  <EditableIframe />
+                </Route>
+                <Route exact path="/workspace">
+                  <Workspace />
+                </Route>
+                <Route path="/attributes">
+                  <Attributes />
+                </Route>
+                <Route path="/">
+                  <Home />
+                </Route>
+              </Switch>
+            </div>
+          </Router>
+        </Container>
+      </div>
+    );
+  }
 }
 
 export default App;
