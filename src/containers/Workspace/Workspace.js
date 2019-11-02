@@ -12,7 +12,7 @@ class Workspace extends Component {
 
     render() {
         return (
-
+            <div></div>
         )
     }
 }

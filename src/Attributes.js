@@ -3,6 +3,7 @@ import Iframe from "react-iframe";
 import { extractUsefulAttributes } from "./components/IFrameParser/Parser.js";
 import AttributesPanel from "./AttributesPanel.js";
 import "./App.css";
+import { Change } from "./model/Change.js";
 
 const siteUrl = "http://localhost:3001/";
 
@@ -36,30 +37,17 @@ class Attributes extends PureComponent {
     this.setState({ attributes });
   };
 
-  editElement = () => {
-    const { path, attributes } = this.state;
+  sendChangeToTargetApp = (change) => {
     const iframe = document.getElementById("id1");
-    const action = "edit";
-    iframe.contentWindow.postMessage({ path, attributes, action }, "*");
+    iframe.contentWindow.postMessage({ change }, "*");
 
-    // clear attributes
-    this.setState({
-      attributes: {}
-    });
-  };
-
-  addNewElement = innerHTML => {
-    const iframe = document.getElementById("id1");
-    const action = "add";
-    iframe.contentWindow.postMessage({ action, innerHTML }, "*");
-  };
-
-  removeElement = () => {
-    const { path } = this.state;
-    const iframe = document.getElementById("id1");
-    const action = "remove";
-    iframe.contentWindow.postMessage({ action, path }, "*");
-  };
+    if(change._change_type == "edit") {
+      // clear attributes
+      this.setState({
+        attributes: {}
+      });
+    }
+  }
 
   render() {
     const innerHTML = "<p>Test</p>";
@@ -72,17 +60,26 @@ class Attributes extends PureComponent {
                 attributes={this.state.attributes}
                 onChangeAttribute={this.onChangeAttribute}
               />
-              <button type="button" onClick={this.editElement}>
+              <button type="button" onClick={()=>{
+                var change = new Change(Change.CHANGE_TYPES.EDIT, this.state.path, { "attributes": this.state.attributes })
+                this.sendChangeToTargetApp(change);
+              }}>
                 Save
               </button>
-              <button type="button" onClick={this.removeElement}>
+              <button type="button" onClick={()=>{
+                var change = new Change(Change.CHANGE_TYPES.EDIT, this.state.path, {})
+                this.sendChangeToTargetApp(change);
+              }}>
                 Remove
               </button>
               {this.state.tag === "DIV" ? (
                 <div>
                   <button
                     type="button"
-                    onClick={() => this.addNewElement(innerHTML)}
+                    onClick={()=>{
+                      var change = new Change(Change.CHANGE_TYPES.EDIT, this.state.path, { "inner-html": innerHTML })
+                      this.sendChangeToTargetApp(change);
+                    }}
                   >
                     Add
                   </button>

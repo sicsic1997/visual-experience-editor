@@ -74,24 +74,49 @@
     window.top.postMessage(editableData, "*");
   }
 
+
+  /**
+    Properties format for changes:
+    1. add:
+    _properties = {
+      "inner-html": "<p></p>"
+    }
+
+    2. edit:
+    _properties = {
+      "attributes": {}
+    }
+
+    3. remove: nothing special
+  */
   function getParentElementMessage(e) {
     const {
-      data: { path, attributes, action, innerHTML }
+      data: { change }
     } = e;
+    
+    var path = change._position;
+    targetItem = decryptChildPath(path);
 
-    if (action && action.toLowerCase() === "add") {
-      addNewElement(editedItem);
-    } else if (action && action.toLowerCase() === "remove") {
-      removeElement(editedItem);
-    } else if (action && action.toLowerCase() === "edit") {
-      editElement(editedItem, attributes);
-    } else if (action && action.toLowerCase() === "move") {
+    if(action) {
+      switch(action.toLowerCase()) {
+        case "add":
+          addNewElement(targetItem, change._properties["inner-html"]);
+          break;
+        case "edit":
+          editElement(targetItem, change._properties["attributes"]);
+          break;
+        case "remove":
+          removeElement(targetItem);
+          break;
+        default:
+
+      }
     }
 
     exitEditMode();
   }
 
-  function addNewElement(parentElement) {
+  function addNewElement(parentElement, innerHTML) {
     if (parentElement) {
       const div = document.createElement("div");
       div.innerHTML = innerHTML;

@@ -1,13 +1,10 @@
 export class Change {
 
-    // serialize: JSON.stringify()
-    // deserialize: JSON.parse()
-
-
     static CHANGE_TYPES = {
-        ADD: 0,
-        EDIT: 1,
-        REMOVE: 2
+        ADD: "add",
+        EDIT: "edit",
+        REMOVE: "remove",
+        MOVE: "move"
     }
 
     constructor(change_type, position, properties = {}) {
