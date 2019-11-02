@@ -12,7 +12,8 @@ class Attributes extends PureComponent {
 
     this.state = {
       path: "",
-      attributes: {}
+      attributes: {},
+      tag: ""
     };
   }
 
@@ -20,7 +21,7 @@ class Attributes extends PureComponent {
     window.addEventListener("message", e => {
       if (e.data.path !== undefined) {
         const attributes = extractUsefulAttributes(e.data.tagName, e.data);
-        this.setState({ attributes, path: e.data.path });
+        this.setState({ attributes, path: e.data.path, tag: e.data.tagName });
       }
     });
   }
@@ -35,17 +36,33 @@ class Attributes extends PureComponent {
     this.setState({ attributes });
   };
 
-  postAttributes = () => {
+  editElement = () => {
     const { path, attributes } = this.state;
     const iframe = document.getElementById("id1");
-    console.log(path, attributes);
-    iframe.contentWindow.postMessage({ path, attributes }, "*");
+    const action = "edit";
+    iframe.contentWindow.postMessage({ path, attributes, action }, "*");
+
+    // clear attributes
     this.setState({
       attributes: {}
     });
   };
 
+  addNewElement = innerHTML => {
+    const iframe = document.getElementById("id1");
+    const action = "add";
+    iframe.contentWindow.postMessage({ action, innerHTML }, "*");
+  };
+
+  removeElement = () => {
+    const { path } = this.state;
+    const iframe = document.getElementById("id1");
+    const action = "remove";
+    iframe.contentWindow.postMessage({ action, path }, "*");
+  };
+
   render() {
+    const innerHTML = "<p>Test</p>";
     return (
       <div className="App">
         <header className="App-header">
@@ -55,9 +72,22 @@ class Attributes extends PureComponent {
                 attributes={this.state.attributes}
                 onChangeAttribute={this.onChangeAttribute}
               />
-              <button type="button" onClick={this.postAttributes}>
+              <button type="button" onClick={this.editElement}>
                 Save
               </button>
+              <button type="button" onClick={this.removeElement}>
+                Remove
+              </button>
+              {this.state.tag === "DIV" ? (
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => this.addNewElement(innerHTML)}
+                  >
+                    Add
+                  </button>
+                </div>
+              ) : null}
               <Iframe id="id1" url={siteUrl} height="1000" width="1000" />
             </div>
           </div>

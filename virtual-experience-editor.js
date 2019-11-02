@@ -1,6 +1,7 @@
 (() => {
   let isEditMode = false;
   let editedItem = null;
+  let editedItemId = null;
 
   function highlightElement(ev) {
     const { target } = ev;
@@ -22,7 +23,7 @@
 
   async function enterEditMode(ev) {
     if (editedItem) {
-      return;
+      exitEditMode();
     }
     const { target } = ev;
 
@@ -31,6 +32,7 @@
 
     target.setAttribute("edited", true);
     editedItem = target;
+    editedItemId = target.id;
 
     try {
       await notifyServerEditOn(target);
@@ -39,9 +41,17 @@
     }
   }
 
-  function exitEditMode(element) {
-    element.removeAttribute("edited", true);
-    unHighlightElement({ target: element });
+  function exitEditMode() {
+    if (!editedItem) {
+      return;
+    }
+    editedItem.removeAttribute("edited", true);
+    editedItem.removeAttribute("draggable");
+    editedItem.removeAttribute("id");
+    if (editedItemId) {
+      editedItem.setAttribute("id", editedItemId);
+    }
+    unHighlightElement({ target: editedItem });
     editedItem = null;
   }
 
@@ -57,21 +67,53 @@
       path
     };
 
+    if (tagName || tagName === "DIV" || tagName === "SPAN") {
+      editedItem.setAttribute("draggable", true);
+      editedItem.setAttribute("id", "draggableElement");
+    }
     window.top.postMessage(editableData, "*");
   }
 
   function getParentElementMessage(e) {
     const {
-      data: { path, attributes }
+      data: { path, attributes, action, innerHTML }
     } = e;
 
-    for (var prop in editedItem) {
-      if (attributes[prop] !== undefined) {
-        editedItem[prop] = attributes[prop];
-      }
+    if (action && action.toLowerCase() === "add") {
+      addNewElement(editedItem);
+    } else if (action && action.toLowerCase() === "remove") {
+      removeElement(editedItem);
+    } else if (action && action.toLowerCase() === "edit") {
+      editElement(editedItem, attributes);
+    } else if (action && action.toLowerCase() === "move") {
     }
 
-    exitEditMode(editedItem);
+    exitEditMode();
+  }
+
+  function addNewElement(parentElement) {
+    if (parentElement) {
+      const div = document.createElement("div");
+      div.innerHTML = innerHTML;
+      parentElement.appendChild(div);
+    }
+  }
+
+  function removeElement(elem) {
+    if (elem) {
+      elem.parentNode.removeChild(elem);
+    }
+  }
+
+  function editElement(elem, newAttributes) {
+    if (!elem) {
+      return;
+    }
+    for (var attr in elem) {
+      if (newAttributes[attr] !== undefined) {
+        elem[attr] = newAttributes[attr];
+      }
+    }
   }
 
   function encryptChildPath(element) {
@@ -106,6 +148,12 @@
       current = current.children[splitted[i]];
     }
     return current;
+  }
+
+  // Drag & drop
+  function onDragStart(event) {
+    event.dataTransfer.setData("text/plain", event.target.id);
+    event.currentTarget.style.backgroundColor = "yellow";
   }
 
   const body = document.getElementsByTagName("body")[0];
