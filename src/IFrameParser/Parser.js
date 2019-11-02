@@ -14,4 +14,4 @@ function extractUsefulAttributes(objTag, objAttributes) {
   return finalAttributes;
 }
 
-export { getFrameDocument, extractUsefulAttributes };
+export { extractUsefulAttributes };

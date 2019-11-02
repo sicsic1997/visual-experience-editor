@@ -3,6 +3,7 @@ import "./App.css";
 import { Link, Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Home from "./containers/Home/Home";
 import Experience from "./containers/Experience/Experience";
+import Attributes from "./Attributes";
 
 function App() {
   return (
@@ -17,12 +18,18 @@ function App() {
               <li>
                 <Link to="/">Home</Link>
               </li>
+              <li>
+                <Link to="/attributes">Attributes</Link>
+              </li>
             </ul>
           </nav>
 
           <Switch>
             <Route path="/experience">
               <Experience />
+            </Route>
+            <Route path="/attributes">
+              <Attributes />
             </Route>
             <Route path="/">
               <Home />

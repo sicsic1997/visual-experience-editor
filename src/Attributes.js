@@ -18,9 +18,10 @@ class Attributes extends PureComponent {
   componentDidMount() {
     window.addEventListener("message", e => {
       console.log("From cient: ", e.data);
-      if (e.data)
-      const attributes = extractUsefulAttributes(e.data.tagName, e.data);
-      this.setState({ attributes });
+      if (e.data.path !== undefined) {
+        const attributes = extractUsefulAttributes(e.data.tagName, e.data);
+        this.setState({ attributes });
+      }
     });
   }
 
