@@ -28,4 +28,15 @@ export class ExperienceLoader {
         })
     } 
 
+    static async getExperiencesForUrl(urlString) {
+        var experienceChangeSets = await this.loadExperiences();
+        filteredResults = [];
+        for(let i = 0; i < experienceChangeSets.length; i ++) {
+            if(experienceChangeSets[i]._metadata == urlString) {
+                filteredResults.push(experienceChangeSets[i])
+            }
+        }
+        return 0;
+    }
+
 }
