@@ -11,18 +11,22 @@ class Attributes extends PureComponent {
     super(props);
 
     this.state = {
+      path: "",
       attributes: {}
     };
   }
 
   componentDidMount() {
     window.addEventListener("message", e => {
-      console.log("From cient: ", e.data);
       if (e.data.path !== undefined) {
         const attributes = extractUsefulAttributes(e.data.tagName, e.data);
-        this.setState({ attributes });
+        this.setState({ attributes, path: e.data.path });
       }
     });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("message");
   }
 
   onChangeAttribute = (key, value) => {
@@ -31,22 +35,29 @@ class Attributes extends PureComponent {
     this.setState({ attributes });
   };
 
+  postAttributes = () => {
+    const { path, attributes } = this.state;
+    const iframe = document.getElementById("id1");
+    console.log(path, attributes);
+    iframe.contentWindow.postMessage({ path, attributes }, "*");
+    this.setState({
+      attributes: {}
+    });
+  };
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <div style={{ display: "inline-block" }}>
             <div>
-              <button
-                type="button"
-                onClick={() => {
-                  console.log(this.state.attributes);
-                }}
-              />
               <AttributesPanel
                 attributes={this.state.attributes}
                 onChangeAttribute={this.onChangeAttribute}
               />
+              <button type="button" onClick={this.postAttributes}>
+                Save
+              </button>
               <Iframe id="id1" url={siteUrl} height="1000" width="1000" />
             </div>
           </div>
