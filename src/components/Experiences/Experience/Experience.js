@@ -21,7 +21,7 @@ const Experience = ({ experience }) => {
                             10 FEB
                         </a>
                         <div className="load__button">
-                            <Button basic color='green' type="button" onClick={() => history.push('/workspace/numeee')}>
+                            <Button basic color='green' type="button" onClick={() => history.push('/workspace/experience/edit/numeee')}>
                                 Load
                             </Button>
                         </div>

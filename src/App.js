@@ -31,7 +31,10 @@ class App extends Component {
                 handleItemClick={this.handleItemClick}
               />
               <Switch>
-                <Route path="/workspace/:fileName">
+                <Route path="/workspace/experience/create">
+                  <Attributes />
+                </Route>
+                <Route path="/workspace/experience/edit/:fileName">
                   <EditableIframe />
                 </Route>
                 <Route exact path="/workspace">

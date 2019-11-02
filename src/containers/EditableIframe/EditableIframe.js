@@ -7,8 +7,7 @@ const EditableIframe = () => {
     console.log(fileName);
     return (
         <div>
-            <h1>Attributes</h1>
-            {/*<Attributes />*/}
+            <Attributes />
         </div>
     );
 };
