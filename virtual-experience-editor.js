@@ -102,20 +102,18 @@
     var path = change._position;
     targetItem = decryptChildPath(path);
 
-    if(action) {
-      switch(action.toLowerCase()) {
-        case "add":
-          addNewElement(targetItem, change._properties["inner-html"]);
-          break;
-        case "edit":
-          editElement(targetItem, change._properties["attributes"]);
-          break;
-        case "remove":
-          removeElement(targetItem);
-          break;
-        default:
+    switch(change._change_type) {
+      case "add":
+        addNewElement(targetItem, change._properties["inner-html"]);
+        break;
+      case "edit":
+        editElement(targetItem, change._properties["attributes"]);
+        break;
+      case "remove":
+        removeElement(targetItem);
+        break;
+      default:
 
-      }
     }
 
     exitEditMode();
@@ -206,7 +204,7 @@
       try {
         event.target.appendChild(dragged);
         newPath = encryptChildPath(dragged);
-        console.log(oldPath, newPath);
+        //console.log(oldPath, newPath);
         // editedItem.parentNode.removeChild(editedItem);
       } catch (e) {}
     }

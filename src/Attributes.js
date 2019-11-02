@@ -38,6 +38,7 @@ class Attributes extends PureComponent {
   };
 
   sendChangeToTargetApp = (change) => {
+    console.log(change)
     const iframe = document.getElementById("id1");
     iframe.contentWindow.postMessage({ change }, "*");
 
@@ -67,7 +68,7 @@ class Attributes extends PureComponent {
                 Save
               </button>
               <button type="button" onClick={()=>{
-                var change = new Change(Change.CHANGE_TYPES.EDIT, this.state.path, {})
+                var change = new Change(Change.CHANGE_TYPES.REMOVE, this.state.path, {})
                 this.sendChangeToTargetApp(change);
               }}>
                 Remove
@@ -77,7 +78,7 @@ class Attributes extends PureComponent {
                   <button
                     type="button"
                     onClick={()=>{
-                      var change = new Change(Change.CHANGE_TYPES.EDIT, this.state.path, { "inner-html": innerHTML })
+                      var change = new Change(Change.CHANGE_TYPES.ADD, this.state.path, { "inner-html": innerHTML })
                       this.sendChangeToTargetApp(change);
                     }}
                   >
