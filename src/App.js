@@ -6,6 +6,7 @@ import Attributes from "./Attributes";
 import { Container } from "semantic-ui-react";
 import AppMenu from "./components/AppMenu/AppMenu";
 import Workspace from "./containers/Workspace/Workspace";
+import EditableIframe from "./containers/EditableIframe/EditableIframe";
 
 class App extends Component {
   constructor(props) {
@@ -30,7 +31,10 @@ class App extends Component {
                 handleItemClick={this.handleItemClick}
               />
               <Switch>
-                <Route path="/workspace">
+                <Route path="/workspace/:fileName">
+                  <EditableIframe />
+                </Route>
+                <Route exact path="/workspace">
                   <Workspace />
                 </Route>
                 <Route path="/attributes">

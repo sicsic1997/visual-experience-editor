@@ -79,30 +79,33 @@
     window.top.postMessage(editableData, "*");
   }
 
-
   /**
-    Properties format for changes:
-    1. add:
-    _properties = {
-      "inner-html": "<p></p>"
-    }
-
-    2. edit:
-    _properties = {
-      "attributes": {}
-    }
-
-    3. remove: nothing special
-  */
+        Properties format for changes:
+        1. add:
+        _properties = {
+          "inner-html": "<p></p>"
+        }
+    
+        2. edit:
+        _properties = {
+          "attributes": {}
+        }
+    
+        3. remove: nothing special
+      */
   function getParentElementMessage(e) {
     const {
       data: { change }
     } = e;
-    
+
+    if (!change) {
+      return;
+    }
+
     var path = change._position;
     targetItem = decryptChildPath(path);
 
-    switch(change._change_type) {
+    switch (change._change_type) {
       case "add":
         addNewElement(targetItem, change._properties["inner-html"]);
         break;
@@ -113,7 +116,6 @@
         removeElement(targetItem);
         break;
       default:
-
     }
 
     exitEditMode();

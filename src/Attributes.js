@@ -19,17 +19,19 @@ class Attributes extends PureComponent {
   }
 
   componentDidMount() {
-    window.addEventListener("message", e => {
-      if (e.data.path !== undefined) {
-        const attributes = extractUsefulAttributes(e.data.tagName, e.data);
-        this.setState({ attributes, path: e.data.path, tag: e.data.tagName });
-      }
-    });
+    window.addEventListener("message", this.getMessageFromIFrame);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("message");
+    window.removeEventListener("message", this.getMessageFromIFrame);
   }
+
+  getMessageFromIFrame = e => {
+    if (e.data.path !== undefined) {
+      const attributes = extractUsefulAttributes(e.data.tagName, e.data);
+      this.setState({ attributes, path: e.data.path, tag: e.data.tagName });
+    }
+  };
 
   onChangeAttribute = (key, value) => {
     const { attributes } = this.state;
@@ -37,18 +39,18 @@ class Attributes extends PureComponent {
     this.setState({ attributes });
   };
 
-  sendChangeToTargetApp = (change) => {
-    console.log(change)
+  sendChangeToTargetApp = change => {
+    console.log(change);
     const iframe = document.getElementById("id1");
     iframe.contentWindow.postMessage({ change }, "*");
 
-    if(change._change_type == "edit") {
+    if (change._change_type == "edit") {
       // clear attributes
       this.setState({
         attributes: {}
       });
     }
-  }
+  };
 
   render() {
     const innerHTML = "<p>Test</p>";
@@ -61,24 +63,42 @@ class Attributes extends PureComponent {
                 attributes={this.state.attributes}
                 onChangeAttribute={this.onChangeAttribute}
               />
-              <button type="button" onClick={()=>{
-                var change = new Change(Change.CHANGE_TYPES.EDIT, this.state.path, { "attributes": this.state.attributes })
-                this.sendChangeToTargetApp(change);
-              }}>
+              <button
+                type="button"
+                onClick={() => {
+                  var change = new Change(
+                    Change.CHANGE_TYPES.EDIT,
+                    this.state.path,
+                    { attributes: this.state.attributes }
+                  );
+                  this.sendChangeToTargetApp(change);
+                }}
+              >
                 Save
               </button>
-              <button type="button" onClick={()=>{
-                var change = new Change(Change.CHANGE_TYPES.REMOVE, this.state.path, {})
-                this.sendChangeToTargetApp(change);
-              }}>
+              <button
+                type="button"
+                onClick={() => {
+                  var change = new Change(
+                    Change.CHANGE_TYPES.REMOVE,
+                    this.state.path,
+                    {}
+                  );
+                  this.sendChangeToTargetApp(change);
+                }}
+              >
                 Remove
               </button>
               {this.state.tag === "DIV" ? (
                 <div>
                   <button
                     type="button"
-                    onClick={()=>{
-                      var change = new Change(Change.CHANGE_TYPES.ADD, this.state.path, { "inner-html": innerHTML })
+                    onClick={() => {
+                      var change = new Change(
+                        Change.CHANGE_TYPES.ADD,
+                        this.state.path,
+                        { "inner-html": innerHTML }
+                      );
                       this.sendChangeToTargetApp(change);
                     }}
                   >
