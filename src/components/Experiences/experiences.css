@@ -1,0 +1,58 @@
+.experiences {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.experiences__header h1 {
+    font-size: 3em;
+    font-weight: 300;
+}
+
+.experiences__list {
+    position: relative;
+}
+
+.experiences__list.ui.cards{
+    margin-top: 2em;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.experiences__list .experience {
+    padding: 0.5em 1em;
+}
+
+.experiences__list .experience > .ui.card {
+    text-align: left;
+}
+
+.card__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.load__button {
+    flex: 1;
+    text-align: right;
+}
+
+.experiences__floating-button {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.experiences__dummy.ui.card>.content, .experiences__list.ui.cards>.card>.content {
+    padding: 0;
+}
+
+.experiences__dummy  .ui.button {
+    min-height: 100px;
+    height: 100%;
+    width: 100%;
+    font-weight: 500;
+    font-size: 2em;
+}

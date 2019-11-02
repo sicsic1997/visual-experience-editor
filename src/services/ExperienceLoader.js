@@ -16,6 +16,7 @@ export class ExperienceLoader {
         for(let i = 0; i < arrRes.length; i++) {
             var experienceChangeSetRaw = JSON.parse(arrRes[i]);
             var experienceChangeSet = new ExperienceChangeSet(experienceChangeSetRaw["_metadata"], experienceChangeSetRaw["_changes_list"]);
+            console.log(resultParsed)
             resultParsed.push(experienceChangeSet);
         }
         return resultParsed;
@@ -30,7 +31,7 @@ export class ExperienceLoader {
 
     static async getExperiencesForUrl(urlString) {
         var experienceChangeSets = await this.loadExperiences();
-        filteredResults = [];
+        const filteredResults = [];
         for(let i = 0; i < experienceChangeSets.length; i ++) {
             if(experienceChangeSets[i]._metadata == urlString) {
                 filteredResults.push(experienceChangeSets[i])
