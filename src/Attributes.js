@@ -6,7 +6,7 @@ import "./App.css";
 
 const siteUrl = "http://localhost:3001/";
 
-class App extends PureComponent {
+class Attributes extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -17,11 +17,10 @@ class App extends PureComponent {
 
   componentDidMount() {
     window.addEventListener("message", e => {
-      console.log("From client: ", e.data);
-      if (e.data.path !== undefined) {
-        const attributes = extractUsefulAttributes(e.data.tagName, e.data);
-        this.setState({ attributes });
-      }
+      console.log("From cient: ", e.data);
+      if (e.data)
+      const attributes = extractUsefulAttributes(e.data.tagName, e.data);
+      this.setState({ attributes });
     });
   }
 
@@ -56,4 +55,4 @@ class App extends PureComponent {
   }
 }
 
-export default App;
+export default Attributes;
