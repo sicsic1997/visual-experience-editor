@@ -2,7 +2,7 @@ import React from 'react';
 
 const Experience = () => (
     <div>
-        <h1>Experience</h1>
+        <h1>Main page</h1>
     </div>
 );
 
