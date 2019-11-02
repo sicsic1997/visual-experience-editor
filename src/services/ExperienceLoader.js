@@ -25,6 +25,7 @@ export class ExperienceLoader {
   }
 
   static async writeExperienceToFile(name, experienceChangeSet) {
+    experienceChangeSet._metadata["file-name"] = name;
     return await axios.post(nodeserverurl + "save-experience", {
       name: name,
       experienceChangeSet: experienceChangeSet
@@ -39,6 +40,17 @@ export class ExperienceLoader {
         filteredResults.push(experienceChangeSets[i]);
       }
     }
-    return 0;
+    return filteredResults;
+  }
+
+  static async getExperienceByFileName(fileName) {
+    var experienceChangeSets = await this.loadExperiences();
+    var filteredResults = [];
+    for (let i = 0; i < experienceChangeSets.length; i++) {
+      if (experienceChangeSets[i]._metadata["file-name"] == fileName) {
+        filteredResults.push(experienceChangeSets[i]);
+      }
+    }
+    return filteredResults;
   }
 }
