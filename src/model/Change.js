@@ -1,4 +1,4 @@
-class Change {
+export class Change {
 
     // serialize: JSON.stringify()
     // deserialize: JSON.parse()
@@ -14,15 +14,6 @@ class Change {
         this._change_type = change_type;
         this._position = position;
         this._properties = properties;
-    }
-
-    static serializeChange(change) {
-        return JSON.stringify(change);
-    }
-
-    static deserializeChange(serializedChange) {
-        var obj = JSON.parse(serializedChange);
-        return new Change(obj._change_type, obj._position, obj._properties);
     }
 
 }
