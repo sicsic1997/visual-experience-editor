@@ -2,6 +2,9 @@
   let isEditMode = false;
   let editedItem = null;
   let editedItemId = null;
+  var dragged;
+  var oldPath;
+  var newPath;
 
   function highlightElement(ev) {
     const { target } = ev;
@@ -48,6 +51,7 @@
     editedItem.removeAttribute("edited", true);
     editedItem.removeAttribute("draggable");
     editedItem.removeAttribute("id");
+    editedItem.removeEventListener("ondragstart", onDragStart);
     if (editedItemId) {
       editedItem.setAttribute("id", editedItemId);
     }
@@ -70,6 +74,7 @@
     if (tagName || tagName === "DIV" || tagName === "SPAN") {
       editedItem.setAttribute("draggable", true);
       editedItem.setAttribute("id", "draggableElement");
+      editedItem.addEventListener("dragstart", onDragStart);
     }
     window.top.postMessage(editableData, "*");
   }
@@ -175,15 +180,54 @@
     return current;
   }
 
-  // Drag & drop
+  /// Drag & drop TODO(make it better)
   function onDragStart(event) {
-    event.dataTransfer.setData("text/plain", event.target.id);
-    event.currentTarget.style.backgroundColor = "yellow";
+    // event.dataTransfer.setData("text/plain", event.target.id);
+    dragged = event.target;
+    oldPath = encryptChildPath(dragged);
   }
+
+  function onDragOver(event) {
+    event.preventDefault();
+  }
+
+  function onDrop(event) {
+    // const id = event.dataTransfer.getData("text");
+    // const draggableElement = document.getElementById(id);
+    // const dropzone = event.target;
+    // dropzone.appendChild(draggableElement);
+    // event.dataTransfer.clearData();
+  }
+
+  function onDragEnter(event) {
+    // highlight potential drop target when the draggable element enters it
+    if (event.target.tagName === "SPAN" || event.target.tagName === "DIV") {
+      //   event.target.style.background = "purple";
+      try {
+        event.target.appendChild(dragged);
+        newPath = encryptChildPath(dragged);
+        console.log(oldPath, newPath);
+        // editedItem.parentNode.removeChild(editedItem);
+      } catch (e) {}
+    }
+    // }
+  }
+
+  function onDragLeave(event) {
+    // reset background of potential drop target when the draggable element leaves it
+    if (event.target.tagName === "SPAN" || event.target.tagName === "DIV") {
+      //   event.target.style.background = "";
+    }
+  }
+  ///
 
   const body = document.getElementsByTagName("body")[0];
   body.addEventListener("click", enterEditMode);
   body.addEventListener("mouseover", highlightElement);
   body.addEventListener("mouseout", unHighlightElement);
   window.addEventListener("message", getParentElementMessage);
+  document.addEventListener("dragenter", onDragEnter);
+  document.addEventListener("dragover", onDragOver);
+  document.addEventListener("drop", onDrop);
+  //   document.addEventListener("dragleave", onDragLeave, false);
 })();

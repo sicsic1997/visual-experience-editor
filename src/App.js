@@ -3,7 +3,7 @@ import "./App.css";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Home from "./containers/Home/Home";
 import Attributes from "./Attributes";
-import {Container} from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import AppMenu from "./components/AppMenu/AppMenu";
 import Workspace from "./containers/Workspace/Workspace";
 
@@ -12,11 +12,11 @@ class App extends Component {
     super(props);
 
     this.state = {
-      activeItem: '' || window.location.pathname.substr(1)
+      activeItem: "" || window.location.pathname.substr(1)
     };
-  };
+  }
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
     const { activeItem } = this.state;
@@ -25,10 +25,16 @@ class App extends Component {
         <Container fluid>
           <Router>
             <div>
-              <AppMenu activeItem={activeItem} handleItemClick={this.handleItemClick} />
+              <AppMenu
+                activeItem={activeItem}
+                handleItemClick={this.handleItemClick}
+              />
               <Switch>
                 <Route path="/workspace">
                   <Workspace />
+                </Route>
+                <Route path="/attributes">
+                  <Attributes />
                 </Route>
                 <Route path="/">
                   <Home />
@@ -38,9 +44,8 @@ class App extends Component {
           </Router>
         </Container>
       </div>
-    )
+    );
   }
-
-};
+}
 
 export default App;
