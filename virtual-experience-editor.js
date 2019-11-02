@@ -49,7 +49,7 @@
     const { style = {}, className, textContent, tagName } = target;
     const path = encryptChildPath(target);
 
-    const editableData = {
+    let editableData = {
       style: { ...style },
       className,
       textContent,
@@ -57,7 +57,21 @@
       path
     };
 
-    window.top.postMessage(editableData, "*");
+    let attributes = target.attributes;
+
+    try {
+      Array.prototype.slice.call(attributes).forEach(function(item) {
+          editableData[item.name] = item.value;
+      });
+    } catch(error) {
+      console.log(error);
+    }
+
+    try{
+      window.top.postMessage(editableData, "*");
+    } catch(error) {
+      console.log(error);
+    }
   }
 
   function getParentElementMessage(e) {
@@ -67,6 +81,20 @@
 
     for (var prop in editedItem) {
       if (attributes[prop] !== undefined) {
+        if (prop === "style") { 
+          let info = attributes[prop];
+          let sepp = info.split(';').map(pair => pair.split(':'));
+
+          for (var i = 0; i < sepp.length; i++) {
+            elem = sepp[i];
+            if (elem.length !== 2) continue;
+
+            editedItem[prop][elem[0].trim()] = elem[1];
+          }
+          
+          continue;
+        }
+
         editedItem[prop] = attributes[prop];
       }
     }
