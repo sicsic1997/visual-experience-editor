@@ -1,22 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Workspace extends Component {
-    componentDidMount() {
-        // TODO;
+  componentDidMount() {
+    // TODO;
 
+    this.setState({});
+  }
 
-        this.setState({
-
-        })
-    }
-
-    render() {
-        return (
-
-        )
-    }
+  render() {
+    return <div />;
+  }
 }
 
 export default Workspace;
-
-
