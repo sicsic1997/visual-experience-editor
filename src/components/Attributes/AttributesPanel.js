@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import {Divider, Header, Input} from "semantic-ui-react";
+import {Button, Divider, Header, Input} from "semantic-ui-react";
 
 const AttributesList = ({ attributes, onChange }) => (
     Object.keys(attributes).map(key => (
@@ -42,6 +42,15 @@ class AttributesPanel extends PureComponent {
         {attributes && Object.keys(attributes).length
           ? <AttributesLists attributes={attributes} onChange={this.onChange} />
           : null}
+        <div className="workflow__actions workflow__actions-bottom">
+            <Button
+                className="workflow__actions--publish"
+                type="button"
+                onClick={() => {}}
+            >
+                Publish
+            </Button>
+        </div>
       </div>
     );
   }

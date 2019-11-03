@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import Iframe from "react-iframe";
 import { extractUsefulAttributes } from "../IFrameParser/AttributeExtractor.js";
-import AttributesPanel from "../../AttributesPanel.js";
+import AttributesPanel from "../Attributes/AttributesPanel.js";
 import {Change} from "../../model/Change";
 
 import './workflow.css';
@@ -96,17 +96,10 @@ class Workflow extends PureComponent {
                 onChangeAttribute={this.onChangeAttribute}
             >
                 <div className="workflow__actions">
-                    <Button
-                        className="workflow__actions--save"
-                        type="button"
-                        onClick={this.handleSave}
-                    >
-                        Save
-                    </Button>
                     <div className="workflow__actions-group">
                         <Button
-                            className="workflow__actions--remove"
-                            icon="trash alternate outline"
+                            className="workflow__actions--save"
+                            icon="save outline"
                             type="button"
                             onClick={this.handleRemove}
                             disabled={!attributes || !Object.keys(attributes).length}
@@ -117,6 +110,13 @@ class Workflow extends PureComponent {
                             type="button"
                             onClick={this.handleAdd}
                             disabled={this.state.tag !== "DIV"}
+                        />
+                        <Button
+                            className="workflow__actions--remove"
+                            icon="trash alternate outline"
+                            type="button"
+                            onClick={this.handleRemove}
+                            disabled={!attributes || !Object.keys(attributes).length}
                         />
                     </div>
                 </div>
