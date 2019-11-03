@@ -1,13 +1,16 @@
 import { Change } from "../model/Change";
 
+var wait = ms => new Promise((r, j)=>setTimeout(r, ms))
+
 function loadExperienceInIFrame(experience, iframe) {
   if (!experience) {
     return;
   }
-  setTimeout(() => {
+  setTimeout(async () => {
     const { _metadata, _changes_list } = experience;
     for(let i = 0; i < _changes_list.length; ++i) {
       sendChangeToIFrame(_changes_list[i], iframe);
+      await wait(1000);
     }
   }, 1000);
   

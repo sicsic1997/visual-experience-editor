@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Button, Divider, Header, Input} from "semantic-ui-react";
 import DataManager from "../../model/DataManager";
+import { withRouter } from 'react-router-dom';
 
 const AttributesList = ({ attributes, onChange, isStyle }) => {
     console.log(attributes.textContent);
@@ -50,8 +51,10 @@ class AttributesPanel extends Component {
             <Button
                 className="workflow__actions--publish"
                 type="button"
-                onClick={() => {DataManager.getInstance().publishExperience()}}
-            >
+                onClick={() => {
+                  DataManager.getInstance().publishExperience()
+                  this.props.history.push("/workspace");
+                }}>
                 Publish
             </Button>
         </div>
@@ -60,4 +63,4 @@ class AttributesPanel extends Component {
   }
 }
 
-export default AttributesPanel;
+export default withRouter(AttributesPanel);

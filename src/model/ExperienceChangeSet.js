@@ -6,7 +6,7 @@ export default class ExperienceChangeSet {
     }
 
     addChange(change) {
-        this._changes_list.addChange(change)
+        this._changes_list.push(change)
     }
 
 }

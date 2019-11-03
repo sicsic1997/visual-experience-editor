@@ -35,6 +35,7 @@ class DataManager {
       name = "dummyName" + String(new Date().getTime() % 1000);
     }
     ExperienceLoader.writeExperienceToFile(name, this._currentExperience);
+    this._currentExperience = null;
   }
 
 }

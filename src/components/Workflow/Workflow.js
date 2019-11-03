@@ -7,6 +7,7 @@ import {Change} from "../../model/Change";
 import './workflow.css';
 import {Button, Divider} from "semantic-ui-react";
 import {loadExperienceInIFrame} from "../../utils/IFrameUtils";
+import DataManager from "../../model/DataManager.js";
 
 const siteUrl = "http://localhost:3001/";
 
@@ -68,6 +69,7 @@ class Workflow extends PureComponent {
           { attributes: this.state.attributes }
       );
       this.sendChangeToTargetApp(change);
+      DataManager.getInstance()._currentExperience.addChange(change)
   };
 
   handleRemove = () => {
@@ -77,6 +79,7 @@ class Workflow extends PureComponent {
           {}
       );
       this.sendChangeToTargetApp(change);
+      DataManager.getInstance()._currentExperience.addChange(change)
   };
 
   handleAdd = () => {
@@ -87,6 +90,7 @@ class Workflow extends PureComponent {
           { "inner-html": innerHTML }
       );
       this.sendChangeToTargetApp(change);
+      DataManager.getInstance()._currentExperience.addChange(change)
   };
 
   render() {
