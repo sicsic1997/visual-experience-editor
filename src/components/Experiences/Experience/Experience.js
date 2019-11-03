@@ -1,17 +1,19 @@
 import React from 'react';
 import {Button, Card, Icon} from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+import DataManager from '../../../model/DataManager';
 
-const Experience = ({ experience: { _metadata } }) => {
+const Experience = ({ experience }) => {
+    const { _metadata } = experience;
     const history = useHistory();
     return (
         <div className="experience">
             <Card>
                 <Card.Content>
-                    <Card.Header>Experience name</Card.Header>
-                    <Card.Meta>{`Url: www.google.ro`}</Card.Meta>
+                    <Card.Header>{_metadata["file-name"]}</Card.Header>
+                    <Card.Meta>{_metadata["url"]}</Card.Meta>
                     <Card.Description>
-                        Daniel is a comedian living in Nashville.
+                        {_metadata["description"]}
                     </Card.Description>
                 </Card.Content>
                 <Card.Content extra className="card__content">
@@ -21,7 +23,10 @@ const Experience = ({ experience: { _metadata } }) => {
                             10 FEB
                         </a>
                         <div className="load__button">
-                            <Button basic color='green' type="button" onClick={() => history.push(`/workspace/experience/edit/${_metadata["file-name"]}`)}>
+                            <Button basic color='green' type="button" onClick={() => {
+                                DataManager.getInstance()._currentExperience = experience;
+                                history.push(`/workspace/experience/edit/${_metadata["file-name"]}`);
+                            }}>
                                 Load
                             </Button>
                         </div>

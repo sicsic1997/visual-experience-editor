@@ -6,6 +6,7 @@ import {Change} from "../../model/Change";
 
 import './workflow.css';
 import {Button} from "semantic-ui-react";
+import {loadExperienceInIFrame} from "../../utils/IFrameUtils";
 
 const siteUrl = "http://localhost:3001/";
 
@@ -21,7 +22,9 @@ class Workflow extends PureComponent {
   }
 
   componentDidMount() {
-    window.addEventListener("message", this.getMessageFromIFrame);
+      const iframe = document.getElementById("id1");
+      loadExperienceInIFrame(this.props.experience, iframe);
+      window.addEventListener("message", this.getMessageFromIFrame);
   }
 
   componentWillUnmount() {

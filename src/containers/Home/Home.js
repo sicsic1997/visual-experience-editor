@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Projects from "../../components/Projects/Projects";
 import DataManager from "../../model/DataManager";
 import { useHistory } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 class Home extends Component {
   constructor(props) {
@@ -14,8 +15,7 @@ class Home extends Component {
 
   onLoadProject = async project => {
     await DataManager.getInstance().getExperiencesAsync(project);
-    // const history = useHistory();
-    // history.push("/workspace/experiences");
+    this.props.history.push("/workspace");
   };
 
   render() {
@@ -24,4 +24,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default withRouter(Home);
