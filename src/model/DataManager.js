@@ -5,6 +5,7 @@ class DataManager {
 
   _experiences = null;
   _url = null;
+  _currentExperience = null;
 
   static getInstance() {
     if (!this._instance) {
@@ -24,6 +25,8 @@ class DataManager {
     console.log(this._experiences);
     return this._experiences;
   }
+
+
 }
 
 export default DataManager;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Attributes from "../../components/Attributes/Attributes";
 import { withRouter } from 'react-router-dom';
 import {ExperienceLoader} from "../../services/ExperienceLoader";
+import DataManager from '../../model/DataManager';
 
 class EditableIframe extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class EditableIframe extends Component {
 
     async componentDidMount() {
         let { match: { params: { fileName }}} = this.props;
-        const experience = await ExperienceLoader.getExperienceByFileName(fileName);
+        const experience = DataManager.getInstance()._currentExperience;
         console.log(experience);
         this.setState({ experience });
     }

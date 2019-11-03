@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {ExperienceLoader} from "../../services/ExperienceLoader";
 import Experience from "../../components/Experiences/Experience/Experience";
 import Experiences from "../../components/Experiences/Experiences";
+import DataManager from '../../model/DataManager';
 
 class Workspace extends Component {
     constructor(props) {
@@ -13,8 +14,10 @@ class Workspace extends Component {
     }
 
     async componentDidMount() {
-        // TODO;
-        const experiences = await ExperienceLoader.loadExperiences();
+        var experiences = DataManager.getInstance()._experiences;
+        if(experiences == null) {
+            experiences = [];
+        }
 
         this.setState({
             experiences
