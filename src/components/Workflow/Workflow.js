@@ -81,7 +81,7 @@ class Workflow extends PureComponent {
   handleAdd = () => {
     const innerHTML = document.getElementById("modal_obj").innerHTML;
     const change = new Change(Change.CHANGE_TYPES.ADD, this.state.path, {
-      innerHTML
+      "inner-html": innerHTML
     });
     this.sendChangeToTargetApp(change);
     DataManager.getInstance()._currentExperience.addChange(change);
