@@ -9,7 +9,27 @@ function extractUsefulAttributes(objTag, objAttributes) {
   for (var key in objAttributes) {
     if (key === "tagName" || key === "path" || key === "class")
       continue;
-    
+
+    if (key === "style") {
+      let info = objAttributes[key];
+      let sepp = info.split(';').map(pair => pair.split(':'));
+      finalAttributes.style = {};
+
+      for (let i = 0; i < sepp.length; i++) {
+        let el = sepp[i];
+        if (el.length !== 2) continue;
+
+        let key = el[0].trim();
+        let value = el[1];
+
+        if (value !== undefined) {
+          finalAttributes.style[key] = value;
+        }
+      }
+
+      continue;
+    }
+
     if (objAttributes.key !== null)
       finalAttributes[key] = objAttributes[key];
   }
