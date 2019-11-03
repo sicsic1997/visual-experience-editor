@@ -1,0 +1,80 @@
+.workflow {
+    display: flex;
+}
+
+.workflow__tools {
+    min-width: 360px;
+    background-color: #f9f9f9;
+    padding: 0 1.5em 2em;
+
+    max-height: calc(100vh - 56px);
+    overflow-y: scroll;
+}
+
+.workflow__iframe {
+    flex: 1;
+    max-height: calc(100vh - 56px);
+    overflow: scroll;
+}
+
+.workflow__actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.workflow__actions-group {
+    display: flex;
+    justify-content: center;
+}
+
+.workflow__actions .ui.button.workflow__actions--save {
+    margin-bottom: 1em;
+    color: white;
+    background-color: #28a745;
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+.workflow__actions .ui.button.workflow__actions--remove {
+    background-color: #f34343;
+    color: white;
+}
+
+.workflow__actions .ui.button.workflow__actions--add {
+    background-color: #007bff;
+    color: white;
+}
+
+.workflow__panel-tools > * {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+    padding: 0 1em;
+}
+
+.workflow__panel-tools .ui.label {
+    background-color: transparent;
+    font-weight: 400;
+}
+
+.workflow__panel-tools .ui.input>input:focus {
+    background: transparent;
+    border-color: inherit;
+}
+
+.workflow__panel-tools .ui.input {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.3em;
+}
+
+.workflow__panel-tools .ui.input>input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid gray;
+    border-radius: unset;
+}
+
+.workflow__panel-tools .ui.header {
+    font-weight: 400;
+}

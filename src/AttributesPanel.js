@@ -1,21 +1,28 @@
 import React, { PureComponent } from "react";
-import { Input } from "semantic-ui-react";
+import {Divider, Header, Input} from "semantic-ui-react";
 
-const AttributesList = ({ attributes, onChange }) =>
-  Object.keys(attributes).map(key => (
-    <Input
-      key={key}
-      label={key}
-      defaultValue={attributes[key]}
-      onChange={(_, data) => onChange(_, data, key)}
-    />
-  ));
+const AttributesList = ({ attributes, onChange }) => (
+    Object.keys(attributes).map(key => (
+        <Input
+            key={key}
+            label={`${key}:`}
+            defaultValue={attributes[key]}
+            onChange={(_, data) => onChange(_, data, key)}
+        />
+    ))
+);
 
 const AttributesLists = ({ attributes: { style, ...rest }, onChange }) => (
-  <div>
-    <AttributesList attributes={rest} onChange={onChange} />
-    <AttributesList attributes={style} onChange={onChange} />
-  </div>
+    <div className="workflow__panel-tools">
+        <div className="workflow__panel-tools--main">
+            <Divider horizontal>Basic Attributes</Divider>
+            <AttributesList attributes={rest}   onChange={onChange} />
+        </div>
+        <div className="workflow__panel-tools--style">
+            <Divider horizontal>Styles</Divider>
+            <AttributesList attributes={style} onChange={onChange}  />
+        </div>
+    </div>
 );
 
 class AttributesPanel extends PureComponent {
@@ -28,12 +35,13 @@ class AttributesPanel extends PureComponent {
   };
 
   render() {
-    const { attributes } = this.props;
+    const { attributes, className, children } = this.props;
     return (
-      <div>
-        {attributes && Object.keys(attributes).length ? (
-          <AttributesLists attributes={attributes} onChange={this.onChange} />
-        ) : null}
+      <div className={className}>
+        {children}
+        {attributes && Object.keys(attributes).length
+          ? <AttributesLists attributes={attributes} onChange={this.onChange} />
+          : null}
       </div>
     );
   }

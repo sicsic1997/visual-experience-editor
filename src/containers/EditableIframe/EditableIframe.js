@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Attributes from "../../components/Attributes/Attributes";
-import { withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import Workflow from "../../components/Workflow/Workflow";
 import { ExperienceLoader } from "../../services/ExperienceLoader";
 
 class EditableIframe extends Component {
@@ -22,14 +22,14 @@ class EditableIframe extends Component {
     this.setState({ experience });
   }
 
-  render() {
-    const { experience } = this.state;
-    return (
-      <div>
-        {experience && <Attributes experience={this.state.experience} />}
-      </div>
-    );
-  }
-}
+    render() {
+        const { experience } = this.state;
+        return (
+            <div>
+                {experience && <Workflow experience={this.state.experience} />}
+            </div>
+        );
+    }
+};
 
 export default withRouter(EditableIframe);
