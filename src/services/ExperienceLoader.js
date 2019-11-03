@@ -1,6 +1,6 @@
 import { Change } from "../model/Change";
 import axios from "axios";
-import { ExperienceChangeSet } from "../model/ExperienceChangeSet";
+import ExperienceChangeSet from "../model/ExperienceChangeSet";
 
 const nodeserverurl = "http://localhost:3004/";
 
@@ -15,6 +15,7 @@ export class ExperienceLoader {
     var arrRes = result["experience-sets"];
     var resultParsed = [];
     for (let i = 0; i < arrRes.length; i++) {
+      console.log(arrRes[i])
       var experienceChangeSetRaw = JSON.parse(arrRes[i]);
       var experienceChangeSet = new ExperienceChangeSet(
         experienceChangeSetRaw["_metadata"],
@@ -29,7 +30,7 @@ export class ExperienceLoader {
     experienceChangeSet._metadata["file-name"] = name;
     return await axios.post(nodeserverurl + "save-experience", {
       name: name,
-      experienceChangeSet: experienceChangeSet
+      experienceChangeSet: JSON.stringify(experienceChangeSet)
     });
   }
 

@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 
 import Experience from "./Experience/Experience";
 import './experiences.css';
+import DataManager from '../../model/DataManager';
+import ExperienceChangeSet from '../../model/ExperienceChangeSet';
 
 const Experiences = ({ experiences }) => {
     const history = useHistory();
@@ -16,7 +18,13 @@ const Experiences = ({ experiences }) => {
                 {experiences.map(experience => <Experience experience={experience} />)}
                 <Card className="experiences__dummy">
                     <Card.Content>
-                        <Button type="button" content='Add new' icon='plus' onClick={() => history.push('/workspace/experience/create')}/>
+                        <Button type="button" content='Add new' icon='plus' onClick={() =>{ 
+                            var newExperience = new ExperienceChangeSet({
+                                url: DataManager.getInstance()._url,
+                                description: "Dummy generated description"
+                            });
+                            DataManager.getInstance()._currentExperience = newExperience;
+                            history.push('/workspace/experience/create')}}/>
                     </Card.Content>
                 </Card>
             </Card.Group>

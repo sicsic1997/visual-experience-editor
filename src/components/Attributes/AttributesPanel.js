@@ -1,37 +1,43 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import {Button, Divider, Header, Input} from "semantic-ui-react";
+import DataManager from "../../model/DataManager";
+import { withRouter } from 'react-router-dom';
+let idx = 1;
 
-const AttributesList = ({ attributes, onChange }) => (
-    Object.keys(attributes).map(key => (
-        <Input
-            key={key}
-            label={`${key}:`}
-            defaultValue={attributes[key]}
-            onChange={(_, data) => onChange(_, data, key)}
-        />
-    ))
-);
+const AttributesList = ({ attributes, onChange, isStyle }) => {
+    console.log(attributes.textContent);
+    return (
+        Object.keys(attributes).map(key => (
+            <Input
+                key={++idx}
+                label={`${key}:`}
+                defaultValue={attributes[key]}
+                name={key}
+                onChange={(_, data) => onChange(_, data, key, isStyle)}
+            />
+        )));
+}
 
 const AttributesLists = ({ attributes: { style, ...rest }, onChange }) => (
     <div className="workflow__panel-tools">
         <div className="workflow__panel-tools--main">
             <Divider horizontal>Basic Attributes</Divider>
-            <AttributesList attributes={rest}   onChange={onChange} />
+            <AttributesList attributes={rest} onChange={onChange} />
         </div>
         <div className="workflow__panel-tools--style">
             <Divider horizontal>Styles</Divider>
-            <AttributesList attributes={style} onChange={onChange}  />
+            <AttributesList attributes={style} onChange={onChange} isStyle={true} />
         </div>
     </div>
 );
 
-class AttributesPanel extends PureComponent {
+class AttributesPanel extends Component {
   constructor(props) {
     super(props);
   }
 
-  onChange = (_, data, key) => {
-    this.props.onChangeAttribute(key, data.value);
+  onChange = (_, data, key, isStyle) => {
+    this.props.onChangeAttribute(key, data.value, isStyle);
   };
 
   render() {
@@ -46,8 +52,10 @@ class AttributesPanel extends PureComponent {
             <Button
                 className="workflow__actions--publish"
                 type="button"
-                onClick={() => {}}
-            >
+                onClick={async () => {
+                  await DataManager.getInstance().publishExperience()
+                  this.props.history.push("/workspace");
+                }}>
                 Publish
             </Button>
         </div>
@@ -56,4 +64,4 @@ class AttributesPanel extends PureComponent {
   }
 }
 
-export default AttributesPanel;
+export default withRouter(AttributesPanel);

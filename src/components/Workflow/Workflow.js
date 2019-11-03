@@ -7,6 +7,7 @@ import { Change } from "../../model/Change";
 import "./workflow.css";
 import { Button, Divider } from "semantic-ui-react";
 import { loadExperienceInIFrame } from "../../utils/IFrameUtils";
+import DataManager from "../../model/DataManager.js";
 import SnippetModal from "../Snippets/SnippetModal.js";
 
 const siteUrl = "http://localhost:3001/";
@@ -40,9 +41,13 @@ class Workflow extends PureComponent {
     }
   };
 
-  onChangeAttribute = (key, value) => {
+  onChangeAttribute = (key, value, isStyle) => {
     const { attributes } = this.state;
-    attributes[key] = value;
+    if (isStyle) {
+      attributes.style[key] = value;
+    } else {
+      attributes[key] = value;
+    }
     this.setState({ attributes });
   };
 
@@ -64,20 +69,22 @@ class Workflow extends PureComponent {
       attributes: this.state.attributes
     });
     this.sendChangeToTargetApp(change);
+    DataManager.getInstance()._currentExperience.addChange(change);
   };
 
   handleRemove = () => {
     const change = new Change(Change.CHANGE_TYPES.REMOVE, this.state.path, {});
     this.sendChangeToTargetApp(change);
+    DataManager.getInstance()._currentExperience.addChange(change);
   };
 
-  handleAdd = obj => {
-    const elem = document.getElementById("modal_obj").innerHTML;
-    console.log(elem);
+  handleAdd = () => {
+    const innerHTML = document.getElementById("modal_obj").innerHTML;
     const change = new Change(Change.CHANGE_TYPES.ADD, this.state.path, {
-      innerHTML: elem
+      innerHTML
     });
     this.sendChangeToTargetApp(change);
+    DataManager.getInstance()._currentExperience.addChange(change);
   };
 
   onModalClose = () => {
