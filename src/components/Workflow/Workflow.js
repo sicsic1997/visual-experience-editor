@@ -5,7 +5,7 @@ import AttributesPanel from "../Attributes/AttributesPanel.js";
 import {Change} from "../../model/Change";
 
 import './workflow.css';
-import {Button} from "semantic-ui-react";
+import {Button, Divider} from "semantic-ui-react";
 import {loadExperienceInIFrame} from "../../utils/IFrameUtils";
 
 const siteUrl = "http://localhost:3001/";
@@ -96,6 +96,7 @@ class Workflow extends PureComponent {
                 onChangeAttribute={this.onChangeAttribute}
             >
                 <div className="workflow__actions">
+                    <Divider horizontal>Actions</Divider>
                     <div className="workflow__actions-group">
                         <Button
                             className="workflow__actions--save"
