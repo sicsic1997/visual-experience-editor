@@ -1,17 +1,20 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import {Button, Divider, Header, Input} from "semantic-ui-react";
 import DataManager from "../../model/DataManager";
 
-const AttributesList = ({ attributes, onChange }) => (
+const AttributesList = ({ attributes, onChange, isStyle }) => {
+    console.log(attributes.textContent);
+    return(
     Object.keys(attributes).map(key => (
         <Input
             key={key}
             label={`${key}:`}
             defaultValue={attributes[key]}
-            onChange={(_, data) => onChange(_, data, key)}
+            name={key}
+            onChange={(_, data) => onChange(_, data, key, isStyle)}
         />
     ))
-);
+)};
 
 const AttributesLists = ({ attributes: { style, ...rest }, onChange }) => (
     <div className="workflow__panel-tools">
@@ -21,18 +24,18 @@ const AttributesLists = ({ attributes: { style, ...rest }, onChange }) => (
         </div>
         <div className="workflow__panel-tools--style">
             <Divider horizontal>Styles</Divider>
-            <AttributesList attributes={style} onChange={onChange}  />
+            <AttributesList attributes={style} onChange={onChange} isStyle={true} />
         </div>
     </div>
 );
 
-class AttributesPanel extends PureComponent {
+class AttributesPanel extends Component {
   constructor(props) {
     super(props);
   }
 
-  onChange = (_, data, key) => {
-    this.props.onChangeAttribute(key, data.value);
+  onChange = (_, data, key, isStyle) => {
+    this.props.onChangeAttribute(key, data.value, isStyle);
   };
 
   render() {

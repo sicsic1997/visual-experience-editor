@@ -10,9 +10,7 @@ function extractUsefulAttributes(objTag, objAttributes) {
     if (key === "tagName" || key === "path" || key === "class") continue;
 
     if (key === "style") {
-      console.log(objAttributes);
       let info = objAttributes[key];
-      console.log("info", info);
       let sepp = [];
       try {
         sepp = info.split(";").map(pair => pair.split(":"));
