@@ -63,7 +63,7 @@ class Workflow extends PureComponent {
     }
   };
 
-  handleSave = () => {
+  handleSave = async () => {
       const change = new Change(
           Change.CHANGE_TYPES.EDIT,
           this.state.path,
@@ -71,22 +71,31 @@ class Workflow extends PureComponent {
       );
       console.log(this.state.attributes);
       this.sendChangeToTargetApp(change);
-      DataManager.getInstance()._currentExperience.addChange(change);
+      try {
+        await DataManager.getInstance().fetchDataManagerCachedData();
+        DataManager.getInstance()._currentExperience.addChange(change);
+      } catch(error) {}
   };
 
-  handleRemove = () => {
+  handleRemove = async () => {
     const change = new Change(Change.CHANGE_TYPES.REMOVE, this.state.path, {});
     this.sendChangeToTargetApp(change);
-    DataManager.getInstance()._currentExperience.addChange(change);
+    try {
+      await DataManager.getInstance().fetchDataManagerCachedData();
+      DataManager.getInstance()._currentExperience.addChange(change);
+    } catch(error) {}
   };
 
-  handleAdd = () => {
+  handleAdd = async () => {
     const innerHTML = document.getElementById("modal_obj").innerHTML;
     const change = new Change(Change.CHANGE_TYPES.ADD, this.state.path, {
       "inner-html": innerHTML
     });
-    this.sendChangeToTargetApp(change);
-    DataManager.getInstance()._currentExperience.addChange(change);
+    try {
+      this.sendChangeToTargetApp(change);
+      await DataManager.getInstance().fetchDataManagerCachedData();
+      DataManager.getInstance()._currentExperience.addChange(change);
+    } catch(error) {}
   };
 
   onModalClose = () => {
