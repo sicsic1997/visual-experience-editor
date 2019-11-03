@@ -1,0 +1,59 @@
+.projects {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.projects__header h1 {
+  font-size: 3em;
+  font-weight: 300;
+}
+
+.projects__list {
+  position: relative;
+}
+
+.projects__list.ui.cards {
+  margin-top: 2em;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.projects__list .project {
+  padding: 0.5em 1em;
+}
+
+.projects__list .project > .ui.card {
+  text-align: left;
+}
+
+.card__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.load__button {
+  flex: 1;
+  text-align: right;
+}
+
+.projects__floating-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.projects__dummy.ui.card > .content,
+.projects__list.ui.cards > .card > .content {
+  padding: 0;
+}
+
+.projects__dummy .ui.button {
+  min-height: 100px;
+  height: 100%;
+  width: 100%;
+  font-weight: 500;
+  font-size: 2em;
+}
