@@ -31,7 +31,10 @@ class DataManager {
     if(!this._currentExperience || this._currentExperience == undefined) {
       return;
     }
-    var name = this._currentExperience._metadata["file-name"]
+    var name;
+    if(this._currentExperience._metadata != undefined && this._currentExperience._metadata != null) {
+      name = this._currentExperience._metadata["file-name"];
+    }
     if(name == null || name == undefined) {
       name = "dummyName" + String(new Date().getTime() % 1000);
     }
@@ -46,7 +49,7 @@ class DataManager {
   }
 
   async fetchDataManagerCachedData() {
-    var urlNew = localStorage["_url"];
+    /*var urlNew = localStorage["_url"];
     if (urlNew != null && urlNew != undefined) {
       this._url = urlNew;
     }
@@ -54,7 +57,7 @@ class DataManager {
     if (currentNewExerienceNew != null && currentNewExerienceNew != undefined) {
       this._currentExperience = currentNewExerienceNew;
     }
-    await this.getExperiencesAsync(this._url);
+    await this.getExperiencesAsync(this._url);*/
   }
 
   

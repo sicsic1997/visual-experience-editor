@@ -27,6 +27,9 @@ export class ExperienceLoader {
   }
 
   static async writeExperienceToFile(name, experienceChangeSet) {
+    if(experienceChangeSet._metadata == null || experienceChangeSet._metadata == undefined) {
+      experienceChangeSet._metadata = {}
+    }
     experienceChangeSet._metadata["file-name"] = name;
     return await axios.post(nodeserverurl + "save-experience", {
       name: name,

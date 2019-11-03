@@ -24,10 +24,11 @@ class Workflow extends PureComponent {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const iframe = document.getElementById("id1");
     loadExperienceInIFrame(this.props.experience, iframe);
     window.addEventListener("message", this.getMessageFromIFrame);
+    await DataManager.getInstance().fetchDataManagerCachedData();
   }
 
   componentWillUnmount() {
@@ -74,6 +75,7 @@ class Workflow extends PureComponent {
       try {
         await DataManager.getInstance().fetchDataManagerCachedData();
         DataManager.getInstance()._currentExperience.addChange(change);
+        DataManager.getInstance().updateDataManagerCachedData();
       } catch(error) {}
   };
 
@@ -83,6 +85,7 @@ class Workflow extends PureComponent {
     try {
       await DataManager.getInstance().fetchDataManagerCachedData();
       DataManager.getInstance()._currentExperience.addChange(change);
+      DataManager.getInstance().updateDataManagerCachedData();
     } catch(error) {}
   };
 
@@ -95,6 +98,7 @@ class Workflow extends PureComponent {
       this.sendChangeToTargetApp(change);
       await DataManager.getInstance().fetchDataManagerCachedData();
       DataManager.getInstance()._currentExperience.addChange(change);
+      DataManager.getInstance().updateDataManagerCachedData();
     } catch(error) {}
   };
 
