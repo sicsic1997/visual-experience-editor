@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Projects from "../../components/Projects/Projects";
+import DataManager from "../../model/DataManager";
+import { useHistory } from "react-router-dom";
 
 class Home extends Component {
   constructor(props) {
@@ -10,24 +12,15 @@ class Home extends Component {
     };
   }
 
-  async componentDidMount() {
-    // TODO;
-    const projects = [];
-
-    this.setState({
-      projects
-    });
-  }
-
-  onAddNewProject = project => {
-    this.setState({ projects: [...this.state.projects, project] });
+  onLoadProject = async project => {
+    await DataManager.getInstance().getExperiencesAsync(project);
+    // const history = useHistory();
+    // history.push("/workspace/experiences");
   };
 
   render() {
     const { projects } = this.state;
-    return (
-      <Projects projects={projects} onAddNewProject={this.onAddNewProject} />
-    );
+    return <Projects projects={projects} onLoadProject={this.onLoadProject} />;
   }
 }
 
