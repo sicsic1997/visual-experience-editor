@@ -1,11 +1,10 @@
 import React, { PureComponent } from "react";
 import Iframe from "react-iframe";
-import { extractUsefulAttributes } from "../IFrameParser/AttributeExtractor.js";
-import AttributesPanel from "../../AttributesPanel.js";
-import "../../App.css";
-import { Change } from "../../model/Change";
-import { loadExperienceInIFrame } from "../../utils/IFrameUtils.js";
-import { SketchPicker } from "react-color";
+import { extractUsefulAttributes } from "./components/IFrameParser/AttributeExtractor.js";
+import AttributesPanel from "./AttributesPanel.js";
+import "./App.css";
+import { Change } from "./model/Change.js";
+import { editElementInIFrame } from "./utils/IFrameUtils.js";
 
 const siteUrl = "http://localhost:3001/";
 
@@ -20,10 +19,7 @@ class Attributes extends PureComponent {
     };
   }
 
-  iframe = document.getElementById("id1");
-
   componentDidMount() {
-    loadExperienceInIFrame(this.props.experience, this.iframe);
     window.addEventListener("message", this.getMessageFromIFrame);
   }
 
@@ -50,7 +46,7 @@ class Attributes extends PureComponent {
     iframe.contentWindow.postMessage({ change }, "*");
 
     if (change._change_type == "edit") {
-      // clear attributes
+      // clear attributes
       this.setState({
         attributes: {}
       });
@@ -61,59 +57,73 @@ class Attributes extends PureComponent {
     const innerHTML = "<p>Test</p>";
     return (
       <div className="App">
+                
         <header className="App-header">
+                    
           <div style={{ display: "inline-block" }}>
-            <SketchPicker />;
-            <Iframe id="id1" url={siteUrl} height="1000" width="1000" />
-            <AttributesPanel
-              attributes={this.state.attributes}
-              onChangeAttribute={this.onChangeAttribute}
-            />
-            <button
-              type="button"
-              onClick={() => {
-                var change = new Change(
-                  Change.CHANGE_TYPES.EDIT,
-                  this.state.path,
-                  { attributes: this.state.attributes }
-                );
-                this.sendChangeToTargetApp(change);
-              }}
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                var change = new Change(
-                  Change.CHANGE_TYPES.REMOVE,
-                  this.state.path,
-                  {}
-                );
-                this.sendChangeToTargetApp(change);
-              }}
-            >
-              Remove
-            </button>
-            {this.state.tag === "DIV" ? (
-              <div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    var change = new Change(
-                      Change.CHANGE_TYPES.ADD,
-                      this.state.path,
-                      { "inner-html": innerHTML }
-                    );
-                    this.sendChangeToTargetApp(change);
-                  }}
-                >
-                  Add
-                </button>
-              </div>
-            ) : null}
+                        
+            <div>
+                            
+              <AttributesPanel
+                attributes={this.state.attributes}
+                onChangeAttribute={this.onChangeAttribute}
+              />
+                            
+              <button
+                type="button"
+                onClick={() => {
+                  editElementInIFrame(
+                    this.state.path,
+                    this.state.attributes,
+                    this.iframe
+                  );
+                }}
+              >
+                                Save               
+              </button>
+                            
+              <button
+                type="button"
+                onClick={() => {
+                  var change = new Change(
+                    Change.CHANGE_TYPES.REMOVE,
+                    this.state.path,
+                    {}
+                  );
+                  this.sendChangeToTargetApp(change);
+                }}
+              >
+                                Remove               
+              </button>
+                            
+              {this.state.tag === "DIV" ? (
+                <div>
+                                    
+                  <button
+                    type="button"
+                    onClick={() => {
+                      var change = new Change(
+                        Change.CHANGE_TYPES.ADD,
+                        this.state.path,
+                        { "inner-html": innerHTML }
+                      );
+                      this.sendChangeToTargetApp(change);
+                    }}
+                  >
+                                        Add                   
+                  </button>
+                                  
+                </div>
+              ) : null}
+                            
+              <Iframe id="id1" url={siteUrl} height="1000" width="1000" />
+                          
+            </div>
+                      
           </div>
+                  
         </header>
+              
       </div>
     );
   }
