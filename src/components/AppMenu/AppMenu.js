@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Menu } from "semantic-ui-react";
+import { Menu, Icon } from "semantic-ui-react";
 
 const AppMenu = ({ activeItem, handleItemClick }) => (
   <Menu stackable>
@@ -30,6 +30,10 @@ const AppMenu = ({ activeItem, handleItemClick }) => (
       onClick={handleItemClick}
     >
       Create experience
+    </Menu.Item>
+    <Menu.Item position="right">
+      <Icon name="bell"/>
+      bellavisual
     </Menu.Item>
   </Menu>
 );

@@ -45,13 +45,23 @@
   top: 0;
 }
 
-.projects__dummy.ui.card > .content,
 .projects__list.ui.cards > .card > .content {
   
   min-height: 100px;
   width: 100%;
-  text-align: center;
+  text-align: center; 
 
+}
+
+.projects__dummy.ui.card {
+  min-width: 30%;
+  min-height: 100px;
+  text-align: center; 
+}
+
+.projects__dummy.ui.card > .content {
+  display: flex;
+  flex-direction: column;
 }
 
 .projects__dummy .ui.button {
