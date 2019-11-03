@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import {Button, Divider, Header, Input} from "semantic-ui-react";
+import DataManager from "../../model/DataManager";
 
 const AttributesList = ({ attributes, onChange }) => (
     Object.keys(attributes).map(key => (
@@ -46,7 +47,7 @@ class AttributesPanel extends PureComponent {
             <Button
                 className="workflow__actions--publish"
                 type="button"
-                onClick={() => {}}
+                onClick={() => {DataManager.getInstance().publishExperience()}}
             >
                 Publish
             </Button>

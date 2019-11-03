@@ -26,6 +26,16 @@ class DataManager {
     return this._experiences;
   }
 
+  async publishExperience() {
+    if(!this._currentExperience) {
+      return;
+    }
+    var name = this._currentExperience._metadata["file-name"]
+    if(name == null || name == undefined) {
+      name = "dummyName" + String(new Date().getTime() % 1000);
+    }
+    ExperienceLoader.writeExperienceToFile(name, this._currentExperience);
+  }
 
 }
 

@@ -1,6 +1,6 @@
 import { Change } from "../model/Change";
 import axios from "axios";
-import { ExperienceChangeSet } from "../model/ExperienceChangeSet";
+import ExperienceChangeSet from "../model/ExperienceChangeSet";
 
 const nodeserverurl = "http://localhost:3004/";
 

@@ -1,4 +1,4 @@
-export class ExperienceChangeSet {
+export default class ExperienceChangeSet {
 
     constructor(metadata = {}, changes_list = []) {
         this._metadata = metadata;
