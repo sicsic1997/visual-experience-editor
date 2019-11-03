@@ -2,11 +2,12 @@ import React, { PureComponent } from "react";
 import Iframe from "react-iframe";
 import { extractUsefulAttributes } from "../IFrameParser/AttributeExtractor.js";
 import AttributesPanel from "../Attributes/AttributesPanel.js";
-import {Change} from "../../model/Change";
+import { Change } from "../../model/Change";
 
-import './workflow.css';
-import {Button, Divider} from "semantic-ui-react";
-import {loadExperienceInIFrame} from "../../utils/IFrameUtils";
+import "./workflow.css";
+import { Button, Divider } from "semantic-ui-react";
+import { loadExperienceInIFrame } from "../../utils/IFrameUtils";
+import SnippetModal from "../Snippets/SnippetModal.js";
 
 const siteUrl = "http://localhost:3001/";
 
@@ -17,14 +18,15 @@ class Workflow extends PureComponent {
     this.state = {
       path: "",
       attributes: {},
-      tag: ""
+      tag: "",
+      modalOpen: false
     };
   }
 
   componentDidMount() {
-      const iframe = document.getElementById("id1");
-      loadExperienceInIFrame(this.props.experience, iframe);
-      window.addEventListener("message", this.getMessageFromIFrame);
+    const iframe = document.getElementById("id1");
+    loadExperienceInIFrame(this.props.experience, iframe);
+    window.addEventListener("message", this.getMessageFromIFrame);
   }
 
   componentWillUnmount() {
@@ -58,71 +60,81 @@ class Workflow extends PureComponent {
   };
 
   handleSave = () => {
-      const change = new Change(
-          Change.CHANGE_TYPES.EDIT,
-          this.state.path,
-          { attributes: this.state.attributes }
-      );
-      this.sendChangeToTargetApp(change);
+    const change = new Change(Change.CHANGE_TYPES.EDIT, this.state.path, {
+      attributes: this.state.attributes
+    });
+    this.sendChangeToTargetApp(change);
   };
 
   handleRemove = () => {
-      const change = new Change(
-          Change.CHANGE_TYPES.REMOVE,
-          this.state.path,
-          {}
-      );
-      this.sendChangeToTargetApp(change);
+    const change = new Change(Change.CHANGE_TYPES.REMOVE, this.state.path, {});
+    this.sendChangeToTargetApp(change);
   };
 
-  handleAdd = () => {
-      const innerHTML = "<p>Test</p>";
-      const change = new Change(
-          Change.CHANGE_TYPES.ADD,
-          this.state.path,
-          { "inner-html": innerHTML }
-      );
-      this.sendChangeToTargetApp(change);
+  handleAdd = obj => {
+    const elem = document.getElementById("modal_obj").innerHTML;
+    console.log(elem);
+    const change = new Change(Change.CHANGE_TYPES.ADD, this.state.path, {
+      innerHTML: elem
+    });
+    this.sendChangeToTargetApp(change);
+  };
+
+  onModalClose = () => {
+    this.setState({ modalOpen: false });
   };
 
   render() {
     const { attributes } = this.state;
     return (
-        <div className="workflow">
-            <Iframe className="workflow__iframe" id="id1" url={siteUrl} height="1000" width="1000" />
-            <AttributesPanel
-                className="workflow__tools"
-                attributes={this.state.attributes}
-                onChangeAttribute={this.onChangeAttribute}
-            >
-                <div className="workflow__actions">
-                    <Divider horizontal>Actions</Divider>
-                    <div className="workflow__actions-group">
-                        <Button
-                            className="workflow__actions--save"
-                            icon="save outline"
-                            type="button"
-                            onClick={this.handleSave}
-                            disabled={!attributes || !Object.keys(attributes).length}
-                        />
-                        <Button
-                            className="workflow__actions--add"
-                            icon="plus"
-                            type="button"
-                            onClick={this.handleAdd}
-                            disabled={this.state.tag !== "DIV"}
-                        />
-                        <Button
-                            className="workflow__actions--remove"
-                            icon="trash alternate outline"
-                            type="button"
-                            onClick={this.handleRemove}
-                            disabled={!attributes || !Object.keys(attributes).length}
-                        />
-                    </div>
-                </div>
-            </AttributesPanel>
-        </div>
+      <div className="workflow">
+        <Iframe
+          className="workflow__iframe"
+          id="id1"
+          url={siteUrl}
+          height="1000"
+          width="1000"
+        />
+        <AttributesPanel
+          className="workflow__tools"
+          attributes={this.state.attributes}
+          onChangeAttribute={this.onChangeAttribute}
+        >
+          <div className="workflow__actions">
+            <Divider horizontal>Actions</Divider>
+            <div className="workflow__actions-group">
+              <Button
+                className="workflow__actions--save"
+                icon="save outline"
+                type="button"
+                onClick={this.handleSave}
+                disabled={!attributes || !Object.keys(attributes).length}
+              />
+              <SnippetModal
+                onHandleSave={this.handleAdd}
+                modalButton={
+                  <Button
+                    className="workflow__actions--add"
+                    icon="plus"
+                    type="button"
+                    onClick={() => this.setState({ modalOpen: true })}
+                    disabled={this.state.tag !== "DIV"}
+                  />
+                }
+                open={this.state.modalOpen}
+                onModalClose={this.onModalClose}
+              />
+              <Button
+                className="workflow__actions--remove"
+                icon="trash alternate outline"
+                type="button"
+                onClick={this.handleRemove}
+                disabled={!attributes || !Object.keys(attributes).length}
+              />
+            </div>
+          </div>
+        </AttributesPanel>
+      </div>
     );
   }
 }
