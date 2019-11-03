@@ -4,10 +4,16 @@ function loadExperienceInIFrame(experience, iframe) {
   if (!experience) {
     return;
   }
-  const { _metadata, _changes_list } = experience;
-  _changes_list.forEach(change => {
+  setTimeout(() => {
+    const { _metadata, _changes_list } = experience;
+    for(let i = 0; i < _changes_list.length; ++i) {
+      sendChangeToIFrame(_changes_list[i], iframe);
+    }
+  }, 1000);
+  
+  /*_changes_list.forEach(change => {
     sendChangeToIFrame(change, iframe);
-  });
+  });*/
 }
 
 function sendChangeToIFrame(change, iframe) {
