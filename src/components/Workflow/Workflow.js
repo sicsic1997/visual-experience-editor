@@ -38,9 +38,13 @@ class Workflow extends PureComponent {
     }
   };
 
-  onChangeAttribute = (key, value) => {
+  onChangeAttribute = (key, value, isStyle) => {
     const { attributes } = this.state;
-    attributes[key] = value;
+    if (isStyle) {
+        attributes.style[key] = value;
+    } else {
+        attributes[key] = value;
+    }
     this.setState({ attributes });
   };
 
