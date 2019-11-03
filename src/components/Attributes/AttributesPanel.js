@@ -2,11 +2,27 @@ import React, { Component, useState } from "react";
 import {Button, Divider, Form, Header, Input} from "semantic-ui-react";
 import DataManager from "../../model/DataManager";
 import { withRouter } from 'react-router-dom';
+import InputColor from 'react-input-color';
 let idx = 1;
+
+const ColorField = ({ onChange, initialHexColor }) => {
+    const [color, changeColor] = useState(initialHexColor);
+    return (
+        <div className="ui labeled input">
+            <div className="ui label label">color: </div>
+            <p>{color}</p>
+            <InputColor
+                initialHexColor={color}
+                onChange={({ hex }) => { changeColor(hex); onChange({}, { value: hex }, 'color', true)}}
+                placement="right"
+            />
+        </div>
+    );
+}
 
 const AttributesList = ({ attributes, onChange, isStyle }) => {
     return (
-        Object.keys(attributes).map(key => (
+        Object.keys(attributes).map(key => key !== 'color' ? (
             <Input
                 key={++idx}
                 label={`${key}:`}
@@ -14,7 +30,7 @@ const AttributesList = ({ attributes, onChange, isStyle }) => {
                 name={key}
                 onChange={(_, data) => onChange(_, data, key, isStyle)}
             />
-        )));
+        ) : <ColorField onChange={onChange} initialHexColor={attributes[key]}/>));
 };
 
 const StylePropForm = ({ onChange }) => {
