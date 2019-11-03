@@ -51,8 +51,8 @@ class AttributesPanel extends Component {
             <Button
                 className="workflow__actions--publish"
                 type="button"
-                onClick={() => {
-                  DataManager.getInstance().publishExperience()
+                onClick={async () => {
+                  await DataManager.getInstance().publishExperience()
                   this.props.history.push("/workspace");
                 }}>
                 Publish
