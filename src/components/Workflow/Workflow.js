@@ -58,9 +58,9 @@ class Workflow extends PureComponent {
 
     if (change._change_type == "edit") {
       // clear attributes
-      this.setState({
-        attributes: {}
-      });
+      // this.setState({
+      //   attributes: {}
+      // });
     }
   };
 
