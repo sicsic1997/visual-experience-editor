@@ -2,12 +2,13 @@ import React, { PureComponent } from "react";
 import Iframe from "react-iframe";
 import { extractUsefulAttributes } from "../IFrameParser/AttributeExtractor.js";
 import AttributesPanel from "../Attributes/AttributesPanel.js";
-import {Change} from "../../model/Change";
+import { Change } from "../../model/Change";
 
-import './workflow.css';
-import {Button, Divider} from "semantic-ui-react";
-import {loadExperienceInIFrame} from "../../utils/IFrameUtils";
+import "./workflow.css";
+import { Button, Divider } from "semantic-ui-react";
+import { loadExperienceInIFrame } from "../../utils/IFrameUtils";
 import DataManager from "../../model/DataManager.js";
+import SnippetModal from "../Snippets/SnippetModal.js";
 
 const siteUrl = "http://localhost:3001/";
 
@@ -18,14 +19,15 @@ class Workflow extends PureComponent {
     this.state = {
       path: "",
       attributes: {},
-      tag: ""
+      tag: "",
+      modalOpen: false
     };
   }
 
   componentDidMount() {
-      const iframe = document.getElementById("id1");
-      loadExperienceInIFrame(this.props.experience, iframe);
-      window.addEventListener("message", this.getMessageFromIFrame);
+    const iframe = document.getElementById("id1");
+    loadExperienceInIFrame(this.props.experience, iframe);
+    window.addEventListener("message", this.getMessageFromIFrame);
   }
 
   componentWillUnmount() {
@@ -42,9 +44,9 @@ class Workflow extends PureComponent {
   onChangeAttribute = (key, value, isStyle) => {
     const { attributes } = this.state;
     if (isStyle) {
-        attributes.style[key] = value;
+      attributes.style[key] = value;
     } else {
-        attributes[key] = value;
+      attributes[key] = value;
     }
     this.setState({ attributes });
   };
@@ -73,24 +75,22 @@ class Workflow extends PureComponent {
   };
 
   handleRemove = () => {
-      const change = new Change(
-          Change.CHANGE_TYPES.REMOVE,
-          this.state.path,
-          {}
-      );
-      this.sendChangeToTargetApp(change);
-      DataManager.getInstance()._currentExperience.addChange(change)
+    const change = new Change(Change.CHANGE_TYPES.REMOVE, this.state.path, {});
+    this.sendChangeToTargetApp(change);
+    DataManager.getInstance()._currentExperience.addChange(change);
   };
 
   handleAdd = () => {
-      const innerHTML = "<p>Test</p>";
-      const change = new Change(
-          Change.CHANGE_TYPES.ADD,
-          this.state.path,
-          { "inner-html": innerHTML }
-      );
-      this.sendChangeToTargetApp(change);
-      DataManager.getInstance()._currentExperience.addChange(change)
+    const innerHTML = document.getElementById("modal_obj").innerHTML;
+    const change = new Change(Change.CHANGE_TYPES.ADD, this.state.path, {
+      innerHTML
+    });
+    this.sendChangeToTargetApp(change);
+    DataManager.getInstance()._currentExperience.addChange(change);
+  };
+
+  onModalClose = () => {
+    this.setState({ modalOpen: false });
   };
 
   render() {
@@ -114,12 +114,19 @@ class Workflow extends PureComponent {
                             onClick={this.handleSave}
                             disabled={!attributes || !Object.keys(attributes).length}
                         />
-                        <Button
-                            className="workflow__actions--add"
-                            icon="plus"
-                            type="button"
-                            onClick={this.handleAdd}
-                            disabled={this.state.tag !== "DIV"}
+                        <SnippetModal
+                            onHandleSave={this.handleAdd}
+                            modalButton={
+                                <Button
+                                    className="workflow__actions--add"
+                                    icon="plus"
+                                    type="button"
+                                    onClick={() => this.setState({ modalOpen: true })}
+                                    disabled={this.state.tag !== "DIV"}
+                                />
+                            }
+                            open={this.state.modalOpen}
+                            onModalClose={this.onModalClose}
                         />
                         <Button
                             className="workflow__actions--remove"

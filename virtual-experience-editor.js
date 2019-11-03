@@ -8,8 +8,15 @@
 
   function highlightElement(ev) {
     const { target } = ev;
+    if (target && target.nodeName !== "BODY" && target != editedItem) {
+      target.style.outline = "solid #999999";
+    }
+  }
+
+  function highlightSelectedElement(ev) {
+    const { target } = ev;
     if (target && target.nodeName !== "BODY") {
-      target.style.outline = "thick solid #0000FF";
+      target.style.outline = "solid #000066";
     }
   }
 
@@ -31,7 +38,7 @@
     const { target } = ev;
 
     isEditMode = true;
-    highlightElement(ev);
+    highlightSelectedElement(ev);
 
     target.setAttribute("edited", true);
     editedItem = target;
@@ -227,6 +234,7 @@
 
   function onDragOver(event) {
     event.preventDefault();
+    event.target.style.background = "";
   }
 
   function onDrop(event) {
