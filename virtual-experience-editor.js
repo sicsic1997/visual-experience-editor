@@ -227,6 +227,7 @@
 
   function onDragOver(event) {
     event.preventDefault();
+    event.target.style.background = "";
   }
 
   function onDrop(event) {
