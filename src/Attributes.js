@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import Iframe from "react-iframe";
-import { extractUsefulAttributes } from "./components/IFrameParser/Parser.js";
+import { extractUsefulAttributes } from "./components/IFrameParser/AttributeExtractor.js";
 import AttributesPanel from "./AttributesPanel.js";
 import "./App.css";
 import { Change } from "./model/Change.js";

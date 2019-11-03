@@ -63,7 +63,7 @@
     const { style = {}, className, textContent, tagName } = target;
     const path = encryptChildPath(target);
 
-    const editableData = {
+    let editableData = {
       style: { ...style },
       className,
       textContent,
@@ -71,12 +71,28 @@
       path
     };
 
+    let attributes = target.attributes;
+
+    try {
+      Array.prototype.slice.call(attributes).forEach(function(item) {
+          editableData[item.name] = item.value;
+      });
+    } catch(error) {
+      console.log(error);
+    }
+        
     if (tagName || tagName === "DIV" || tagName === "SPAN") {
       editedItem.setAttribute("draggable", true);
       editedItem.setAttribute("id", "draggableElement");
       editedItem.addEventListener("dragstart", onDragStart);
     }
-    window.top.postMessage(editableData, "*");
+
+    try{
+      window.top.postMessage(editableData, "*");
+    } catch(error) {
+      console.log(error);
+    }
+
   }
 
   /**
@@ -116,6 +132,7 @@
         removeElement(targetItem);
         break;
       default:
+        break;
     }
 
     exitEditMode();
@@ -139,9 +156,24 @@
     if (!elem) {
       return;
     }
-    for (var attr in elem) {
-      if (newAttributes[attr] !== undefined) {
-        elem[attr] = newAttributes[attr];
+
+    for (var prop in elem) {
+      if (newAttributes[prop] !== undefined) {
+        if (prop === "style") { 
+          let info = newAttributes[prop];
+          let sepp = info.split(';').map(pair => pair.split(':'));
+
+          for (var i = 0; i < sepp.length; i++) {
+            let el = sepp[i];
+            if (el.length !== 2) continue;
+
+            elem[prop][el[0].trim()] = el[1];
+          }
+          
+          continue;
+        }
+
+        elem[prop] = newAttributes[prop];
       }
     }
   }
