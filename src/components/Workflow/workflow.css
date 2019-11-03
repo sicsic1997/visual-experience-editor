@@ -113,3 +113,14 @@
 .workflow__panel-tools .ui.header {
     font-weight: 400;
 }
+
+.style-prop__form {
+    margin-top: 0.5em;
+}
+
+.style-prop__form .ui.icon.button {
+    padding: 0;
+    background: transparent;
+    color: #007bff;
+    font-size: 1.2em;
+}
