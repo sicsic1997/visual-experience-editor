@@ -1,19 +1,16 @@
 import React, { Component } from "react";
 import {Button, Divider, Header, Input} from "semantic-ui-react";
-
-const AttributesList = ({ attributes, onChange, isStyle }) => {
-    console.log(attributes.textContent);
-    return(
+let idx = 1;
+const AttributesList = ({ attributes, onChange, isStyle }) => (
     Object.keys(attributes).map(key => (
         <Input
-            key={key}
+            key={++idx}
             label={`${key}:`}
             defaultValue={attributes[key]}
             name={key}
             onChange={(_, data) => onChange(_, data, key, isStyle)}
         />
-    ))
-)};
+    )));
 
 const AttributesLists = ({ attributes: { style, ...rest }, onChange }) => (
     <div className="workflow__panel-tools">
