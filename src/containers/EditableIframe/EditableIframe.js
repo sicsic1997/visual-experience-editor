@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Attributes from "../../components/Attributes/Attributes";
 import { withRouter } from 'react-router-dom';
 import {ExperienceLoader} from "../../services/ExperienceLoader";
+import Workflow from "../../components/Workflow/Workflow";
 
 class EditableIframe extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class EditableIframe extends Component {
         const { experience } = this.state;
         return (
             <div>
-                {experience && <Attributes/>}
+                {experience && <Workflow />}
             </div>
         );
     }

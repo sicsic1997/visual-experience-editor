@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react";
-import { Input } from "semantic-ui-react";
+import {Divider, Header, Input} from "semantic-ui-react";
 
 const AttributesList = ({ attributes }) => (
     Object.keys(attributes).map(key => (
         <Input
             key={key}
-            label={key}
+            label={`${key}:`}
             defaultValue={attributes[key]}
             onChange={(_, data) => this.onChange(_, data, key)}
         />
@@ -13,9 +13,15 @@ const AttributesList = ({ attributes }) => (
 );
 
 const AttributesLists = ({ attributes: { style, ...rest }}) => (
-    <div>
-      <AttributesList attributes={rest} />
-      <AttributesList attributes={style} />
+    <div className="workflow__panel-tools">
+        <div className="workflow__panel-tools--main">
+            <Divider horizontal>Basic Attributes</Divider>
+            <AttributesList attributes={rest} />
+        </div>
+        <div className="workflow__panel-tools--style">
+            <Divider horizontal>Styles</Divider>
+            <AttributesList attributes={style} />
+        </div>
     </div>
 );
 
@@ -30,9 +36,10 @@ class AttributesPanel extends PureComponent {
   };
 
   render() {
-    const { attributes } = this.props;
+    const { attributes, className, children } = this.props;
     return (
-      <div>
+      <div className={className}>
+        {children}
         {attributes && Object.keys(attributes).length
           ? <AttributesLists attributes={attributes} />
           : null}

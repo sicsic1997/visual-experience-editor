@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import "./App.css";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Home from "./containers/Home/Home";
-import Attributes from "./components/Attributes/Attributes";
 import { Container } from "semantic-ui-react";
 import AppMenu from "./components/AppMenu/AppMenu";
 import Workspace from "./containers/Workspace/Workspace";
 import EditableIframe from "./containers/EditableIframe/EditableIframe";
+import Workflow from "./components/Workflow/Workflow";
 
 class App extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class App extends Component {
               />
               <Switch>
                 <Route path="/workspace/experience/create">
-                  <Attributes />
+                  <Workflow />
                 </Route>
                 <Route path="/workspace/experience/edit/:fileName">
                   <EditableIframe />
@@ -40,8 +40,8 @@ class App extends Component {
                 <Route exact path="/workspace">
                   <Workspace />
                 </Route>
-                <Route path="/attributes">
-                  <Attributes />
+                <Route path="/workflow">
+                  <Workflow />
                 </Route>
                 <Route path="/">
                   <Home />
