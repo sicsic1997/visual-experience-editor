@@ -102,7 +102,7 @@ class Workflow extends PureComponent {
                             className="workflow__actions--save"
                             icon="save outline"
                             type="button"
-                            onClick={this.handleRemove}
+                            onClick={this.handleSave}
                             disabled={!attributes || !Object.keys(attributes).length}
                         />
                         <Button
