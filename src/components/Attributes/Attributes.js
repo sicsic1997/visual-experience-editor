@@ -5,6 +5,7 @@ import AttributesPanel from "../../AttributesPanel.js";
 import "../../App.css";
 import { Change } from "../../model/Change";
 import { loadExperienceInIFrame } from "../../utils/IFrameUtils.js";
+import { SketchPicker } from "react-color";
 
 const siteUrl = "http://localhost:3001/";
 
@@ -62,6 +63,7 @@ class Attributes extends PureComponent {
       <div className="App">
         <header className="App-header">
           <div style={{ display: "inline-block" }}>
+            <SketchPicker />;
             <Iframe id="id1" url={siteUrl} height="1000" width="1000" />
             <AttributesPanel
               attributes={this.state.attributes}
