@@ -20,7 +20,7 @@ const AttributesList = ({ attributes, onChange, isStyle }) => {
 const StylePropForm = ({ onChange }) => {
     const [data, changeData] = useState({});
     return (
-        <Form>
+        <Form className="style-prop__form">
             <Form.Input
                 placeholder='Attribute name'
                 name='propDescription'
@@ -60,7 +60,9 @@ class AttributesPanel extends Component {
   onChange = async (_, data, key, isStyle, isNew) => {
     const { onAttributeAdded } = this.props;
     this.props.onChangeAttribute(key, data.value, isStyle);
-    await onAttributeAdded();
+    if (isNew) {
+        await onAttributeAdded();
+    }
   };
 
   render() {

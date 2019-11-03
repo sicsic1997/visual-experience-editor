@@ -8,7 +8,6 @@
     padding: 0 1.5em 2em;
 
     max-height: calc(100vh - 56px);
-    overflow-y: scroll;
     position: relative;
 }
 
@@ -104,7 +103,7 @@
     margin-bottom: 0.3em;
 }
 
-.workflow__panel-tools .ui.input>input {
+.workflow__panel-tools .ui.input>input, .workflow__panel-tools .ui.form .field .ui.input input {
     background: transparent;
     border: none;
     border-bottom: 1px solid gray;
