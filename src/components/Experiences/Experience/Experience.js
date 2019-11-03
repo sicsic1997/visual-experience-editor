@@ -20,7 +20,7 @@ const Experience = ({ experience }) => {
                     <React.Fragment>
                         <a>
                             <Icon name='user' />
-                            10 FEB
+                            {_metadata["last-updated-date"]}
                         </a>
                         <div className="load__button">
                             <Button basic color='green' type="button" onClick={() => {
