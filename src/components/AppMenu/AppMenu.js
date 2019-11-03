@@ -17,7 +17,7 @@ const AppMenu = ({ activeItem, handleItemClick }) => (
       active={activeItem === "workspace"}
       as={Link}
       name="workspace"
-      to="workspace"
+      to="/workspace"
       onClick={handleItemClick}
     >
       Workspace
@@ -26,10 +26,10 @@ const AppMenu = ({ activeItem, handleItemClick }) => (
       active={activeItem === "attributes"}
       as={Link}
       name="attributes"
-      to="attributes"
+      to="/attributes"
       onClick={handleItemClick}
     >
-      Attributes
+      Create experience
     </Menu.Item>
   </Menu>
 );
