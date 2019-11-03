@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Card, Icon} from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 
-const Experience = ({ experience }) => {
+const Experience = ({ experience: { _metadata } }) => {
     const history = useHistory();
     return (
         <div className="experience">
@@ -21,7 +21,7 @@ const Experience = ({ experience }) => {
                             10 FEB
                         </a>
                         <div className="load__button">
-                            <Button basic color='green' type="button" onClick={() => history.push('/workspace/experience/edit/numeee')}>
+                            <Button basic color='green' type="button" onClick={() => history.push(`/workspace/experience/edit/${_metadata["file-name"]}`)}>
                                 Load
                             </Button>
                         </div>

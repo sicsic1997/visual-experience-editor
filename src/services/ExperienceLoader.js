@@ -53,6 +53,6 @@ export class ExperienceLoader {
         filteredResults.push(experienceChangeSets[i]);
       }
     }
-    return filteredResults;
+    return filteredResults[0];
   }
 }
