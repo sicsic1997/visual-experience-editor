@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Home from "./containers/Home/Home";
-import Attributes from "./Attributes";
+import Attributes from "./components/Attributes/Attributes";
 import { Container } from "semantic-ui-react";
 import AppMenu from "./components/AppMenu/AppMenu";
 import Workspace from "./containers/Workspace/Workspace";

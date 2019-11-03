@@ -31,7 +31,6 @@ class AttributesPanel extends PureComponent {
 
   render() {
     const { attributes } = this.props;
-    debugger;
     return (
       <div>
         {attributes && Object.keys(attributes).length

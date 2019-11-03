@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Attributes from "../../Attributes";
+import Attributes from "../../components/Attributes/Attributes";
 import { withRouter } from 'react-router-dom';
 import {ExperienceLoader} from "../../services/ExperienceLoader";
 
