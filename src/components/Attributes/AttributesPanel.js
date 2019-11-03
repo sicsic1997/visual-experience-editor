@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {Button, Divider, Header, Input} from "semantic-ui-react";
-import { DataManager } from "../../model/DataManager";
+import DataManager from "../../model/DataManager";
 import { withRouter } from 'react-router-dom';
 let idx = 1;
 
@@ -22,7 +22,7 @@ const AttributesLists = ({ attributes: { style, ...rest }, onChange }) => (
     <div className="workflow__panel-tools">
         <div className="workflow__panel-tools--main">
             <Divider horizontal>Basic Attributes</Divider>
-            <AttributesList attributes={rest}   onChange={onChange} />
+            <AttributesList attributes={rest} onChange={onChange} />
         </div>
         <div className="workflow__panel-tools--style">
             <Divider horizontal>Styles</Divider>

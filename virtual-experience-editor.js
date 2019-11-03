@@ -63,7 +63,7 @@
     const { style = {}, className, textContent, tagName } = target;
     const path = encryptChildPath(target);
 
-    const editableData = {
+    let editableData = {
       style: { ...style },
       className,
       textContent,
@@ -71,19 +71,35 @@
       path
     };
 
+    let attributes = target.attributes;
+
+    try {
+      Array.prototype.slice.call(attributes).forEach(function(item) {
+          editableData[item.name] = item.value;
+      });
+    } catch(error) {
+      console.log(error);
+    }
+        
     if (tagName || tagName === "DIV" || tagName === "SPAN") {
       editedItem.setAttribute("draggable", true);
       editedItem.setAttribute("id", "draggableElement");
       editedItem.addEventListener("dragstart", onDragStart);
     }
-    window.top.postMessage(editableData, "*");
+
+    try{
+      window.top.postMessage(editableData, "*");
+    } catch(error) {
+      console.log(error);
+    }
+
   }
 
   /**
         Properties format for changes:
         1. add:
         _properties = {
-          "innerHTML": "<p></p>"
+          "inner-html": "<p></p>"
         }
     
         2. edit:
@@ -107,7 +123,7 @@
 
     switch (change._change_type) {
       case "add":
-        addNewElement(targetItem, change._properties["innerHTML"]);
+        addNewElement(targetItem, change._properties["inner-html"]);
         break;
       case "edit":
         editElement(targetItem, change._properties["attributes"]);
@@ -116,6 +132,7 @@
         removeElement(targetItem);
         break;
       default:
+        break;
     }
 
     exitEditMode();
@@ -139,9 +156,30 @@
     if (!elem) {
       return;
     }
-    for (var attr in elem) {
-      if (newAttributes[attr] !== undefined) {
-        elem[attr] = newAttributes[attr];
+
+    for (var prop in elem) {
+      if (newAttributes[prop] !== undefined) {
+        if (prop === "style") { 
+          let info = newAttributes[prop];
+
+          let encr = "";
+          for (let el in info) {
+            encr += el + ": " + info[el].trim() + "; ";
+          }
+
+          let sepp = encr.split(';').map(pair => pair.split(':'));
+
+          for (var i = 0; i < sepp.length; i++) {
+            let el = sepp[i];
+            if (el.length !== 2) continue;
+
+            elem[prop][el[0].trim()] = el[1];
+          }
+          
+          continue;
+        }
+
+        elem[prop] = newAttributes[prop];
       }
     }
   }
@@ -181,28 +219,14 @@
   }
 
   /// Drag & drop TODO(make it better)
-  function clone(obj) {
-    if (null == obj || "object" != typeof obj) return obj;
-    var copy = obj.constructor();
-    for (var attr in obj) {
-      if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-    }
-    return copy;
-  }
-
   function onDragStart(event) {
     // event.dataTransfer.setData("text/plain", event.target.id);
     dragged = event.target;
     oldPath = encryptChildPath(dragged);
-    event.target.style.opacity = 0.5;
   }
 
   function onDragOver(event) {
     event.preventDefault();
-  }
-
-  function onDragEnd(event) {
-    event.target.style.opacity = "";
   }
 
   function onDrop(event) {
@@ -214,10 +238,6 @@
   }
 
   function onDragEnter(event) {
-    if (event.target.parentNode === dragged.parentNode) {
-      event.target.before(dragged);
-      return;
-    }
     // highlight potential drop target when the draggable element enters it
     if (event.target.tagName === "SPAN" || event.target.tagName === "DIV") {
       //   event.target.style.background = "purple";
@@ -247,6 +267,5 @@
   document.addEventListener("dragenter", onDragEnter);
   document.addEventListener("dragover", onDragOver);
   document.addEventListener("drop", onDrop);
-  document.addEventListener("dragend", onDragEnd);
   //   document.addEventListener("dragleave", onDragLeave, false);
 })();
