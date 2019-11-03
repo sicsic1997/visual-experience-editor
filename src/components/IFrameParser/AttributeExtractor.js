@@ -7,12 +7,16 @@ function extractUsefulAttributes(objTag, objAttributes) {
   // we display all the attributes that are set (except `tagName` & `path`)
   // P.S. those which are specified in `editableData` should be displayed, even if not set)
   for (var key in objAttributes) {
-    if (key === "tagName" || key === "path" || key === "class")
-      continue;
+    if (key === "tagName" || key === "path" || key === "class") continue;
 
     if (key === "style") {
+      console.log(objAttributes);
       let info = objAttributes[key];
-      let sepp = info.split(';').map(pair => pair.split(':'));
+      console.log("info", info);
+      let sepp = [];
+      try {
+        sepp = info.split(";").map(pair => pair.split(":"));
+      } catch (e) {}
       finalAttributes.style = {};
 
       for (let i = 0; i < sepp.length; i++) {
@@ -30,8 +34,7 @@ function extractUsefulAttributes(objTag, objAttributes) {
       continue;
     }
 
-    if (objAttributes.key !== null)
-      finalAttributes[key] = objAttributes[key];
+    if (objAttributes.key !== null) finalAttributes[key] = objAttributes[key];
   }
 
   // switch (objTag) {
