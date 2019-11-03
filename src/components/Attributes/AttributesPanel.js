@@ -1,16 +1,22 @@
 import React, { Component } from "react";
 import {Button, Divider, Header, Input} from "semantic-ui-react";
+import { DataManager } from "../../model/DataManager";
+import { withRouter } from 'react-router-dom';
 let idx = 1;
-const AttributesList = ({ attributes, onChange, isStyle }) => (
-    Object.keys(attributes).map(key => (
-        <Input
-            key={++idx}
-            label={`${key}:`}
-            defaultValue={attributes[key]}
-            name={key}
-            onChange={(_, data) => onChange(_, data, key, isStyle)}
-        />
-    )));
+
+const AttributesList = ({ attributes, onChange, isStyle }) => {
+    console.log(attributes.textContent);
+    return (
+        Object.keys(attributes).map(key => (
+            <Input
+                key={++idx}
+                label={`${key}:`}
+                defaultValue={attributes[key]}
+                name={key}
+                onChange={(_, data) => onChange(_, data, key, isStyle)}
+            />
+        )));
+}
 
 const AttributesLists = ({ attributes: { style, ...rest }, onChange }) => (
     <div className="workflow__panel-tools">
@@ -46,8 +52,10 @@ class AttributesPanel extends Component {
             <Button
                 className="workflow__actions--publish"
                 type="button"
-                onClick={() => {}}
-            >
+                onClick={async () => {
+                  await DataManager.getInstance().publishExperience()
+                  this.props.history.push("/workspace");
+                }}>
                 Publish
             </Button>
         </div>
@@ -56,4 +64,4 @@ class AttributesPanel extends Component {
   }
 }
 
-export default AttributesPanel;
+export default withRouter(AttributesPanel);
