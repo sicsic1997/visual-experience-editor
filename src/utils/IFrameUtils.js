@@ -20,6 +20,7 @@ function loadExperienceInIFrame(experience, iframe) {
 }
 
 function sendChangeToIFrame(change, iframe) {
+  iframe = document.getElementById("id1");
   iframe.contentWindow.postMessage({ change }, "*");
 }
 

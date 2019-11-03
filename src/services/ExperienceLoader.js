@@ -29,6 +29,7 @@ export class ExperienceLoader {
       experienceChangeSet._metadata = {}
     }
     experienceChangeSet._metadata["file-name"] = name;
+    experienceChangeSet._metadata["last-updated-date"] = new Date().toJSON().slice(0,16);
     return await axios.post(nodeserverurl + "save-experience", {
       name: name,
       experienceChangeSet: JSON.stringify(experienceChangeSet)
