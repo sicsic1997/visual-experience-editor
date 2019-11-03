@@ -49,7 +49,9 @@ const StylePropForm = ({ onChange }) => {
                 onChange={e => changeData({ ...data, [e.target.name]: e.target.value })}
                 required
             />
-            <Button icon="add circle" onClick={() => { onChange({}, { value: data.propValue }, data.propDescription, true, true)}}/>
+            <Button type="button" icon="add circle" onClick={() => { 
+              onChange({}, { value: data.propValue }, data.propDescription, true, true);
+            }}/>
         </Form>
     )
 };
