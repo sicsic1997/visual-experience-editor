@@ -25,6 +25,7 @@ const Experience = ({ experience }) => {
                         <div className="load__button">
                             <Button basic color='green' type="button" onClick={() => {
                                 DataManager.getInstance()._currentExperience = experience;
+                                DataManager.getInstance().updateDataManagerCachedData();
                                 history.push(`/workspace/experience/edit/${_metadata["file-name"]}`);
                             }}>
                                 Load

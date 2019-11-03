@@ -27,7 +27,8 @@ class DataManager {
   }
 
   async publishExperience() {
-    if(!this._currentExperience) {
+    await this.fetchDataManagerCachedData();
+    if(!this._currentExperience || this._currentExperience == undefined) {
       return;
     }
     var name = this._currentExperience._metadata["file-name"]
@@ -38,6 +39,25 @@ class DataManager {
     this._currentExperience = null;
     await this.getExperiencesAsync(this._url);
   }
+
+  updateDataManagerCachedData() {
+    localStorage["_url"] = this._url;
+    localStorage["_currentExperience"] = this._currentExperience;
+  }
+
+  async fetchDataManagerCachedData() {
+    var urlNew = localStorage["_url"];
+    if (urlNew != null && urlNew != undefined) {
+      this._url = urlNew;
+    }
+    var currentNewExerienceNew = localStorage["_currentExperience"];
+    if (currentNewExerienceNew != null && currentNewExerienceNew != undefined) {
+      this._currentExperience = currentNewExerienceNew;
+    }
+    await this.getExperiencesAsync(this._url);
+  }
+
+  
 
 }
 

@@ -14,6 +14,7 @@ class Workspace extends Component {
     }
 
     async componentDidMount() {
+        await DataManager.getInstance().fetchDataManagerCachedData();
         var experiences = DataManager.getInstance()._experiences;
         if(experiences == null) {
             experiences = [];
