@@ -22,7 +22,6 @@ class DataManager {
     this._experiences = experiences;
     this._url = url;
 
-    console.log(this._experiences);
     return this._experiences;
   }
 

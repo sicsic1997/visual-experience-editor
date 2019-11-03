@@ -27,7 +27,6 @@ class Workspace extends Component {
 
     render() {
         const { experiences } = this.state;
-        console.log(experiences);
         return <Experiences experiences={experiences} />;
     }
 }

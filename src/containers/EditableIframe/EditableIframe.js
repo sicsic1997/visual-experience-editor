@@ -18,7 +18,6 @@ class EditableIframe extends Component {
       }
     } = this.props;
     const experience = await ExperienceLoader.getExperienceByFileName(fileName);
-    console.log(experience);
     this.setState({ experience });
   }
 
