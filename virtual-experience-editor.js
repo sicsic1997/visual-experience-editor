@@ -83,7 +83,7 @@
         Properties format for changes:
         1. add:
         _properties = {
-          "inner-html": "<p></p>"
+          "innerHTML": "<p></p>"
         }
     
         2. edit:
@@ -107,7 +107,7 @@
 
     switch (change._change_type) {
       case "add":
-        addNewElement(targetItem, change._properties["inner-html"]);
+        addNewElement(targetItem, change._properties["innerHTML"]);
         break;
       case "edit":
         editElement(targetItem, change._properties["attributes"]);

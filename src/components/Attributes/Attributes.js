@@ -3,7 +3,8 @@ import Iframe from "react-iframe";
 import { extractUsefulAttributes } from "../IFrameParser/AttributeExtractor.js";
 import AttributesPanel from "../../AttributesPanel.js";
 import "../../App.css";
-import {Change} from "../../model/Change";
+import { Change } from "../../model/Change";
+import { loadExperienceInIFrame } from "../../utils/IFrameUtils.js";
 
 const siteUrl = "http://localhost:3001/";
 
@@ -18,7 +19,10 @@ class Attributes extends PureComponent {
     };
   }
 
+  iframe = document.getElementById("id1");
+
   componentDidMount() {
+    loadExperienceInIFrame(this.props.experience, this.iframe);
     window.addEventListener("message", this.getMessageFromIFrame);
   }
 
