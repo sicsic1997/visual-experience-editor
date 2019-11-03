@@ -50,7 +50,6 @@ class Workflow extends PureComponent {
   };
 
   sendChangeToTargetApp = change => {
-    console.log(change);
     const iframe = document.getElementById("id1");
     iframe.contentWindow.postMessage({ change }, "*");
 
@@ -68,8 +67,9 @@ class Workflow extends PureComponent {
           this.state.path,
           { attributes: this.state.attributes }
       );
+      console.log(this.state.attributes);
       this.sendChangeToTargetApp(change);
-      DataManager.getInstance()._currentExperience.addChange(change)
+      DataManager.getInstance()._currentExperience.addChange(change);
   };
 
   handleRemove = () => {
@@ -102,6 +102,7 @@ class Workflow extends PureComponent {
                 className="workflow__tools"
                 attributes={this.state.attributes}
                 onChangeAttribute={this.onChangeAttribute}
+                onAttributeAdded={this.handleSave}
             >
                 <div className="workflow__actions">
                     <Divider horizontal>Actions</Divider>

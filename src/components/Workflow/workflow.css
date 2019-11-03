@@ -64,6 +64,23 @@
     overflow-y: scroll;
 }
 
+.workflow__panel-tools .ui.form {
+    display: flex;
+    align-items: center;
+}
+
+.workflow__panel-tools .ui.form > .field {
+    margin-bottom: 0;
+}
+
+.workflow__panel-tools .ui.form .button {
+    margin-bottom: 0.3em;
+}
+
+.workflow__panel-tools .ui.form .field .ui.input {
+    width: 90%;
+}
+
 .workflow__panel-tools > * {
     display: flex;
     flex-direction: column;
