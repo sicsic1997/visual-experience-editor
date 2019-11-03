@@ -1,17 +1,19 @@
 .projects {
+  min-height: calc(100vh - 150px);
+  align-items: center;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
 }
 
 .projects__header h1 {
-  font-size: 3em;
+  font-size: 1em;
   font-weight: 300;
 }
 
 .projects__list {
-  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .projects__list.ui.cards {
@@ -25,13 +27,11 @@
 }
 
 .projects__list .project > .ui.card {
-  text-align: left;
+  text-align: center;
 }
 
 .card__content {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .load__button {
@@ -47,13 +47,21 @@
 
 .projects__dummy.ui.card > .content,
 .projects__list.ui.cards > .card > .content {
-  padding: 0;
+  
+  min-height: 100px;
+  width: 100%;
+  text-align: center;
+
 }
 
 .projects__dummy .ui.button {
-  min-height: 100px;
-  height: 100%;
-  width: 100%;
-  font-weight: 500;
-  font-size: 2em;
+  width: auto;
+  margin-top: 5px;
+  /* padding: 0; */
+  min-height: 40px;
+
+}
+
+.projects_list {
+  height: 200px;
 }

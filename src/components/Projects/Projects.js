@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Card, Icon, Input } from "semantic-ui-react";
+import './projects.css'
 
 class Projects extends Component {
   constructor(props) {
